@@ -63,7 +63,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 	private EditText mSearchBox;
 	private TextView mPageTitle;
 	private ImageButton mSearchBtn;
-	private ImageView mHomeLogo, mNavBtn, mRefreshBtn, mCancelSearchBtn;
+	private ImageView mHomeLogo, mNavBtn, mCancelSearchBtn;
 	private ProgressBar mSearchSpinner;
 	private ExternalLinkWarningDialog mExtDialog;
 	private ErrorDialog mErrDialog;
@@ -116,9 +116,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 		mNavBtn = (ImageView) findViewById(R.id.navBtn);
 		mNavBtn.setOnClickListener(this);
-
-		mRefreshBtn = (ImageView) findViewById(R.id.refreshBtn);
-		mRefreshBtn.setOnClickListener(this);
 
 		mSearchBox = (EditText) findViewById(R.id.searchET);
 		mSearchBox.setOnEditorActionListener(this);
@@ -175,13 +172,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		case R.id.logo:
 		case R.id.navBtn:
 			toggleNav();
-			break;
-		case R.id.refreshBtn:
-			if (currentPageTitle == null || currentPageTitle.equals("")) {
-				getContent(PrefsManager.getInstance(this).getStartPage());
-			} else {
-				getContent(currentPageTitle);
-			}
 			break;
 		case R.id.cancelSearchBtn:
 			hideKeyboard();
