@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+        <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        />
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="4dp"
+        android:background="#FFFFFF" >
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/gw2logo_top" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="@string/settings_title" />
+    </RelativeLayout>
+    
+        <ImageView
+        android:id="@+id/rule1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topBar"
+        android:scaleType="fitXY"
+        android:src="@drawable/splot" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rule1" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp" >
+
+            <RelativeLayout
+                android:id="@+id/startPageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true" >
+                
+                <TextView
+                    android:id="@+id/startPageLabel"
+                    style="@style/SettingsLabel"
+                    android:text="@string/settings_start_page_label"
+                    />
+                
+                <EditText
+                    android:id="@+id/startPageBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/startPageLabel"
+                    android:layout_marginTop="5dp"
+                    android:inputType="textCapSentences|textNoSuggestions"
+                    android:hint="@string/settings_start_page_hint"
+                    />              
+                
+            </RelativeLayout>
+            
+            <RelativeLayout
+                android:id="@+id/setWikiLanguageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/startPageLayout"
+                android:layout_marginTop="10dp"
+                >
+                
+                <TextView
+                    android:id="@+id/setWikiLanguageLabel"
+                    style="@style/SettingsLabel"
+                    android:text="@string/settings_wiki_language_label"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/setWikiLanguageLabel"
+                    android:layout_marginTop="5dp"
+                    >
+                <TextView
+                    android:id="@+id/setWikiLanguageCurrent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/setWikiLanguageBtn"
+                    android:textSize="16sp"
+                    />
+                <Button
+                    android:id="@+id/setWikiLanguageBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_wiki_language_btn"
+                    />
+                
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

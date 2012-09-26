@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="180dp"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_nav_menu"
+    android:padding="5dp" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <LinearLayout
+            android:id="@+id/navigationLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            >
+
+            <TextView
+                android:id="@+id/navigationHeader"
+                style="@style/NavMenuHeader"
+                android:text="@string/nav_navigation_header" />
+        </LinearLayout>
+        
+        <RelativeLayout
+            android:id="@+id/appSettingsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/navigationLayout"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/selector_nav_item_bg"
+            >
+            
+            <ImageView
+                android:id="@+id/settingsIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/nav_settings"
+                />
+            <TextView
+                android:id="@+id/settingsLabel"
+                style="@style/NavMenuHeader"
+                android:text="@string/nav_app_settings"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/settingsIcon"
+                />            
+        </RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_white" >
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/bg_white"
+        android:padding="4dp" >
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/gw2logo_top" />
+
+        <ProgressBar
+            android:id="@+id/spinner"
+            style="@android:style/Widget.ProgressBar.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/cancelSearchBtn"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/cancelSearchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/searchLayout"
+            android:src="@drawable/nav_cancel"
+            android:visibility="invisible" />
+
+        <RelativeLayout
+            android:id="@+id/searchLayout"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/logo"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/shape_search_box" >
+
+            <EditText
+                android:id="@+id/searchET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/searchBtn"
+                android:background="#00000000"
+                android:hint="@string/hint_search"
+                android:imeOptions="actionSearch|flagNoExtractUi"
+                android:inputType="textCapSentences|textNoSuggestions"
+                android:padding="2dp"
+                android:singleLine="true" />
+
+            <ImageButton
+                android:id="@+id/searchBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="#00000000"
+                android:src="@drawable/ic_action_search" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/searchResultsLayout"
+        android:layout_width="200dp"
+        android:layout_height="160dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/topBar"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="-6dp"
+        android:background="@drawable/shape_search_box"
+        android:orientation="vertical"
+        android:padding="2dp"
+        android:visibility="gone" >
+
+        <ListView
+            android:id="@+id/searchResultsListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_grey" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/navBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topBar"
+        android:background="@drawable/bg_grey" >
+
+        <ImageView
+            android:id="@+id/rule1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/splot" />
+
+        <ImageView
+            android:id="@+id/navBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:src="@drawable/nav_arrow_down" />
+
+        <TextView
+            android:id="@+id/pageTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/refreshBtn"
+            android:layout_toRightOf="@+id/navBtn"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:padding="3dp"
+            android:singleLine="true"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/refreshBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/selector_nav_refresh" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/rule2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/navBar"
+        android:scaleType="fitXY"
+        android:src="@drawable/splot" />
+
+    <FrameLayout
+        android:id="@+id/navMenuContent"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rule2"
+        android:layout_marginTop="-1dp" />
+
+    <WebView
+        android:id="@+id/webContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rule2" />
+
+    <RelativeLayout
+        android:id="@+id/webSpinnerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/webContent"
+        android:layout_alignLeft="@+id/webContent"
+        android:layout_alignRight="@+id/webContent"
+        android:layout_alignTop="@+id/webContent"
+        android:visibility="gone" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/shape_web_spinner"
+            android:padding="10dp" >
+
+            <ProgressBar
+                android:id="@+id/webSpinner"
+                style="@android:style/Widget.ProgressBar.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:indeterminate="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/webSpinner"
+                android:layout_centerHorizontal="true"
+                android:text="@string/loading"
+                />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

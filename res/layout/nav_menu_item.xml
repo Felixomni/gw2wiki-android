@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/selector_nav_item_bg"
+   	>
+   	<ImageView
+   	    android:id="@+id/bullet"
+   	    android:padding="5dp"
+   	    android:layout_alignParentLeft="true"
+   	    android:layout_height="wrap_content"
+   	    android:layout_width="wrap_content"
+   	    android:src="@drawable/nav_bullet"
+   	    android:layout_centerVertical="true" 
+   	    />
+   	<TextView
+   	    android:id="@+id/text"
+   	    android:layout_toRightOf="@+id/bullet"
+   	    android:textSize="16sp"
+   	    android:layout_height="wrap_content"
+   	    android:layout_width="wrap_content"
+   	    android:singleLine="true"
+   	    />
+    
+
+</RelativeLayout>

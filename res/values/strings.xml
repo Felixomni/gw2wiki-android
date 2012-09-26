@@ -1,0 +1,46 @@
+<resources>
+
+<!--     Miscellaneous -->
+
+    <string name="app_name">GW2 Wiki</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="hint_search">Search</string>
+    <string name="no_search_results">No results found</string>
+    <string name="loading">Loading&#8230;</string>
+
+<!--     External Link Warning Dialog -->
+    <string name="external_link_title">Warning: External link</string>
+    <string name="external_link_text"> The selected link, \n\n%1$s\n\nleads to another website and will open in your browser application.</string>
+    <string name="external_link_dontshow">Don\'t show me this warning again.</string>
+
+<!--     Error Dialog -->
+    <string name="error_connect_title">Error: No connection</string>
+    <string name="error_connect_text">Please ensure your device has an internet connection and try again. </string>
+    <string name="error_no_page_title">Error: Article does not exist</string>
+    <string name="error_no_page_text">Sorry, we don\'t have an article on that topic yet.</string>
+    <string name="error_generic_title">Error: Whatever</string>
+    <string name="error_generic_text">Some shit done fucked up.</string>
+
+<!-- 	 Nav Menu -->
+    <string name="nav_navigation_header">Navigation</string>
+    <string name="nav_support_header">Support</string>
+    <string name="nav_toolbox_header">Toolbox</string>
+    <string name="nav_app_settings">App settings</string>
+
+<!-- 	  Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_start_page_label">Your start page</string>
+    <string name="settings_start_page_hint">Page title&#8230;</string>
+    <string name="settings_wiki_language_label">Wiki language</string>
+    <string name="settings_wiki_language_current">Current language: %1$s</string>
+    <string name="settings_wiki_language_btn">Change language&#8230;</string>
+    <string name="settings_wiki_language_dialog_title">Choose a language</string>
+
+<!-- 	   Languages -->
+    <string name="language_english">English</string>
+    <string name="language_german">German</string>
+    <string name="language_spanish">Spanish</string>
+    <string name="language_french">French</string>
+
+</resources>

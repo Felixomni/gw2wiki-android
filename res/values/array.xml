@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="en_Navigation_display">
+        <item>Main Page</item>
+        <item>Game updates</item>
+        <item>Guild Wars 2 news</item>
+        <item>Community portal</item>
+    </string-array>
+    <string-array name="en_Navigation_pagename">
+        <item>Main_Page</item>
+        <item>Game updates</item>
+        <item>News</item>
+        <item>Guild_Wars_2_Wiki:Community_portal</item>
+    </string-array>
+    
+        <string-array name="de_Navigation_display">
+        <item>Hauptseite</item>
+        <item>Spielupdates</item>
+        <item>Neuigkeiten</item>
+        <item>GW2Wiki-Portal</item>
+    </string-array>
+    <string-array name="de_Navigation_pagename">
+        <item>Hauptseite</item>
+        <item>Spielupdate</item>
+        <item>Hauptseite/Neuigkeiten</item>
+        <item>GW2Wiki:Portal</item>
+    </string-array>
+    
+    <string-array name="es_Navigation_display">
+        <item>Página principal</item>
+        <item>Actualizaciones del juego</item>
+        <item>Noticias</item>
+        <item>Portal de la comunidad</item>
+    </string-array>
+    <string-array name="es_Navigation_pagename">
+        <item>Página principal</item>
+        <item>Actualizaciones del juego</item>
+        <item>Noticias</item>
+        <item>Guild Wars 2 Wiki:Portal de la comunidad</item>
+    </string-array>
+    
+    <string-array name="fr_Navigation_display">
+        <item>Accueil</item>
+        <item>Actualités Guild Wars 2</item>
+        <item>Communauté</item>
+    </string-array>
+    <string-array name="fr_Navigation_pagename">
+        <item>Accueil</item>
+        <item>Actualités</item>
+        <item>GW2Wiki:Communauté</item>
+    </string-array>
+    
+    <string-array name="Settings_wiki_languages">
+        <item>English</item>
+        <item>German</item>
+        <item>Spanish</item>
+        <item>French</item>
+    </string-array>
+
+</resources>
