@@ -1,4 +1,4 @@
-package com.felixsoft.gw2w;
+package com.felixware.gw2w;
 
 import java.util.Timer;
 import java.util.TimerTask;

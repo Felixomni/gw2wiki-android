@@ -1,4 +1,4 @@
-package com.felixsoft.gw2w.listeners;
+package com.felixware.gw2w.listeners;
 
 public interface MainListener {
 

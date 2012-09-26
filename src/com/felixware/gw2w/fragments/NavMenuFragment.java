@@ -1,4 +1,4 @@
-package com.felixsoft.gw2w.fragments;
+package com.felixware.gw2w.fragments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,11 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.felixsoft.gw2w.R;
-import com.felixsoft.gw2w.listeners.MainListener;
-import com.felixsoft.gw2w.models.NavMenuItem;
-import com.felixsoft.gw2w.utilities.Constants;
-import com.felixsoft.gw2w.utilities.PrefsManager;
+import com.felixware.gw2w.R;
+import com.felixware.gw2w.listeners.MainListener;
+import com.felixware.gw2w.models.NavMenuItem;
+import com.felixware.gw2w.utilities.Constants;
+import com.felixware.gw2w.utilities.PrefsManager;
 
 public class NavMenuFragment extends Fragment implements OnClickListener {
 	private static final int NAVIGATION = 0;

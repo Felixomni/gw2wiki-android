@@ -1,4 +1,4 @@
-package com.felixsoft.gw2w.utilities;
+package com.felixware.gw2w.utilities;
 
 import android.content.Context;
 import android.net.Uri;
@@ -6,7 +6,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.felixsoft.gw2w.listeners.MainListener;
+import com.felixware.gw2w.listeners.MainListener;
 
 public class ArticleWebViewClient extends WebViewClient {
 	private Context mContext;

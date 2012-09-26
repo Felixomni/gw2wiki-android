@@ -1,8 +1,8 @@
-package com.felixsoft.gw2w.utilities;
+package com.felixware.gw2w.utilities;
 
 import android.content.Context;
 
-import com.felixsoft.gw2w.R;
+import com.felixware.gw2w.R;
 
 public class Constants {
 	public static final String BASE_URL_ENGLISH = "http://wiki.guildwars2.com";

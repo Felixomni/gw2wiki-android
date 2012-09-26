@@ -1,4 +1,4 @@
-package com.felixsoft.gw2w;
+package com.felixware.gw2w;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,10 +9,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.felixsoft.gw2w.utilities.Constants;
-import com.felixsoft.gw2w.utilities.PrefsManager;
+import com.felixware.gw2w.utilities.Constants;
+import com.felixware.gw2w.utilities.PrefsManager;
 
 public class SettingsActivity extends Activity implements OnClickListener {
 	private EditText mStartPageBox;
@@ -69,7 +68,7 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	}
 
 	protected void setLanguage(int language) {
-		//Toast.makeText(this, Integer.toString(language), Toast.LENGTH_SHORT).show();
+		// Toast.makeText(this, Integer.toString(language), Toast.LENGTH_SHORT).show();
 		PrefsManager.getInstance(this).setWikiLanguage(language);
 		mCurrentLanguage.setText(String.format(getResources().getString(R.string.settings_wiki_language_current), Constants.getLanguage(this, language)));
 	}

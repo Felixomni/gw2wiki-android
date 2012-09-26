@@ -1,4 +1,4 @@
-package com.felixsoft.gw2w.http;
+package com.felixware.gw2w.http;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +9,7 @@ import android.content.Context;
 import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 
-import com.felixsoft.gw2w.utilities.Constants;
+import com.felixware.gw2w.utilities.Constants;
 
 public abstract class RequestTask {
 

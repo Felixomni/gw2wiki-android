@@ -1,4 +1,4 @@
-package com.felixsoft.gw2w.http;
+package com.felixware.gw2w.http;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +12,9 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.util.Log;
 
-import com.felixsoft.gw2w.R;
-import com.felixsoft.gw2w.http.RequestTask.RequestListener;
-import com.felixsoft.gw2w.utilities.Constants;
+import com.felixware.gw2w.R;
+import com.felixware.gw2w.http.RequestTask.RequestListener;
+import com.felixware.gw2w.utilities.Constants;
 
 public final class WebService {
 	private static final String TAG = WebService.class.getSimpleName();

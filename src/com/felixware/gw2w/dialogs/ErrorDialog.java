@@ -1,4 +1,4 @@
-package com.felixsoft.gw2w.dialogs;
+package com.felixware.gw2w.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -8,8 +8,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.felixsoft.gw2w.R;
-import com.felixsoft.gw2w.utilities.Constants;
+import com.felixware.gw2w.R;
+import com.felixware.gw2w.utilities.Constants;
 
 public class ErrorDialog extends Dialog implements OnClickListener {
 	private Context mContext;

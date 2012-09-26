@@ -1,4 +1,4 @@
-package com.felixsoft.gw2w.dialogs;
+package com.felixware.gw2w.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,9 +11,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.felixsoft.gw2w.R;
-import com.felixsoft.gw2w.listeners.MainListener;
-import com.felixsoft.gw2w.utilities.PrefsManager;
+import com.felixware.gw2w.R;
+import com.felixware.gw2w.listeners.MainListener;
+import com.felixware.gw2w.utilities.PrefsManager;
 
 public class ExternalLinkWarningDialog extends Dialog implements OnClickListener, OnDismissListener {
 	private Context mContext;

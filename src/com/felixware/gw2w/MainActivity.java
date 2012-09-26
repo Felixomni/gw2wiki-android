@@ -1,4 +1,4 @@
-package com.felixsoft.gw2w;
+package com.felixware.gw2w;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,18 +40,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.felixsoft.gw2w.dialogs.ErrorDialog;
-import com.felixsoft.gw2w.dialogs.ExternalLinkWarningDialog;
-import com.felixsoft.gw2w.fragments.NavMenuFragment;
-import com.felixsoft.gw2w.http.RequestTask;
-import com.felixsoft.gw2w.http.WebService;
-import com.felixsoft.gw2w.http.WebService.GetContentListener;
-import com.felixsoft.gw2w.http.WebService.GetSearchResultsListener;
-import com.felixsoft.gw2w.http.WebServiceException;
-import com.felixsoft.gw2w.listeners.MainListener;
-import com.felixsoft.gw2w.utilities.ArticleWebViewClient;
-import com.felixsoft.gw2w.utilities.Constants;
-import com.felixsoft.gw2w.utilities.PrefsManager;
+import com.felixware.gw2w.dialogs.ErrorDialog;
+import com.felixware.gw2w.dialogs.ExternalLinkWarningDialog;
+import com.felixware.gw2w.fragments.NavMenuFragment;
+import com.felixware.gw2w.http.RequestTask;
+import com.felixware.gw2w.http.WebService;
+import com.felixware.gw2w.http.WebService.GetContentListener;
+import com.felixware.gw2w.http.WebService.GetSearchResultsListener;
+import com.felixware.gw2w.http.WebServiceException;
+import com.felixware.gw2w.listeners.MainListener;
+import com.felixware.gw2w.utilities.ArticleWebViewClient;
+import com.felixware.gw2w.utilities.Constants;
+import com.felixware.gw2w.utilities.PrefsManager;
 
 public class MainActivity extends FragmentActivity implements OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener {
 	private static final String NAV_STATE = "nav_state";

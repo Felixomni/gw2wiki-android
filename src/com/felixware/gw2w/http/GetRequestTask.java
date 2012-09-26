@@ -1,4 +1,4 @@
-package com.felixsoft.gw2w.http;
+package com.felixware.gw2w.http;
 
 import java.io.IOException;
 import java.util.List;

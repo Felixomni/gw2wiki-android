@@ -1,4 +1,4 @@
-package com.felixsoft.gw2w.models;
+package com.felixware.gw2w.models;
 
 public class NavMenuItem {
 

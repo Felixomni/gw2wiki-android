@@ -1,4 +1,4 @@
-package com.felixsoft.gw2w.utilities;
+package com.felixware.gw2w.utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
