@@ -51,6 +51,7 @@ import com.felixware.gw2w.http.WebServiceException;
 import com.felixware.gw2w.listeners.MainListener;
 import com.felixware.gw2w.utilities.ArticleWebViewClient;
 import com.felixware.gw2w.utilities.Constants;
+import com.felixware.gw2w.utilities.LinkStripper;
 import com.felixware.gw2w.utilities.PrefsManager;
 
 public class MainActivity extends FragmentActivity implements OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener {
@@ -270,11 +271,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 	@Override
 	public void didGetContent(RequestTask request, String content, String title) {
-		mWebContent.loadDataWithBaseURL(Constants.getBaseURL(this), content, "text/html", "UTF-8", title);
+		mWebContent.loadDataWithBaseURL(Constants.getBaseURL(this), LinkStripper.strip(content), "text/html", "UTF-8", title);
 		mPageTitle.setText(title);
-		Log.i("checking titles", "current page title is " + currentPageTitle + " new title is " + title);
+		// Log.i("checking titles", "current page title is " + currentPageTitle + " new title is " + title);
 		if (!isGoingBack && (currentPageTitle == null || !currentPageTitle.equals(title))) {
-			Log.i("back history", "Adding " + title + " to the back history");
+			// Log.i("back history", "Adding " + title + " to the back history");
 			backHistory.add(title);
 		} else {
 			isGoingBack = false;

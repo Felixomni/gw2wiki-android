@@ -21,7 +21,7 @@ public class ArticleWebViewClient extends WebViewClient {
 	public boolean shouldOverrideUrlLoading(WebView view, String url) {
 		if (Uri.parse(url).getHost().equals(Constants.getDomain(mContext))) {
 			if (Uri.parse(url).getQueryParameter("action") != null && Uri.parse(url).getQueryParameter("action").equals("edit")) {
-				Toast.makeText(mContext, "Sorry, editing not supported yet", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, "Sorry, editing not supported", Toast.LENGTH_SHORT).show();
 			} else {
 				mListener.onLink(url);
 			}
