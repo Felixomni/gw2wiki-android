@@ -1,5 +1,11 @@
 package com.felixware.gw2w.utilities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import android.content.Context;
 
 import com.felixware.gw2w.R;
@@ -71,5 +77,29 @@ public class Constants {
 		default:
 			return null;
 		}
+	}
+
+	public static List<String> getFavoritesListFromJSON(Context context) {
+		List<String> favoritesList = new ArrayList<String>();
+		String favoritesJSONString = PrefsManager.getInstance(context).getFavorites();
+		if (favoritesJSONString == null) {
+			return favoritesList;
+		}
+		try {
+			JSONArray favoritesJSONArray = new JSONArray(favoritesJSONString);
+			for (int i = 0; i < favoritesJSONArray.length(); i++) {
+				favoritesList.add(favoritesJSONArray.getString(i));
+			}
+		} catch (JSONException e) {
+		}
+		return favoritesList;
+	}
+
+	public static String getJSONStringFromList(List<String> favorites) {
+		JSONArray favoritesJSONArray = new JSONArray();
+		for (String pageName : favorites) {
+			favoritesJSONArray.put(pageName);
+		}
+		return favoritesJSONArray.toString();
 	}
 }

@@ -22,15 +22,12 @@ import com.felixware.gw2w.utilities.Constants;
 import com.felixware.gw2w.utilities.PrefsManager;
 
 public class NavMenuFragment extends Fragment implements OnClickListener {
-	private static final int NAVIGATION = 0;
-	private static final int SUPPORT = 1;
-	private static final int TOOLBOX = 2;
 
 	private MainListener mListener;
 	private View mView;
 	private LinearLayout mNavigationLayout;
-	private RelativeLayout mSettings;
-	private List<NavMenuItem> mNavigationItems = new ArrayList<NavMenuItem>(), mSupportItems = new ArrayList<NavMenuItem>(), mToolboxItems = new ArrayList<NavMenuItem>();
+	private RelativeLayout mSettings, mFavorites;
+	private List<NavMenuItem> mNavigationItems = new ArrayList<NavMenuItem>();
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -55,6 +52,9 @@ public class NavMenuFragment extends Fragment implements OnClickListener {
 		mSettings = (RelativeLayout) mView.findViewById(R.id.appSettingsLayout);
 		mSettings.setOnClickListener(this);
 
+		mFavorites = (RelativeLayout) mView.findViewById(R.id.favoritesLayout);
+		mFavorites.setOnClickListener(this);
+
 		mNavigationLayout = (LinearLayout) mView.findViewById(R.id.navigationLayout);
 	}
 
@@ -65,7 +65,7 @@ public class NavMenuFragment extends Fragment implements OnClickListener {
 	}
 
 	private void setupViews() {
-		setupList(NAVIGATION);
+		setupList();
 		addItems(mNavigationLayout, mNavigationItems);
 	}
 
@@ -95,40 +95,35 @@ public class NavMenuFragment extends Fragment implements OnClickListener {
 
 	}
 
-	private void setupList(int itemtype) {
+	private void setupList() {
 		int language = PrefsManager.getInstance(getActivity()).getWikiLanguage();
 		int display_id = 0;
 		int page_id = 0;
 
-		switch (itemtype) {
-		case NAVIGATION:
-			switch (language) {
-			case Constants.GERMAN:
-				display_id = R.array.de_Navigation_display;
-				page_id = R.array.de_Navigation_pagename;
-				break;
-			case Constants.ENGLISH:
-				display_id = R.array.en_Navigation_display;
-				page_id = R.array.en_Navigation_pagename;
-				break;
-			case Constants.SPANISH:
-				display_id = R.array.es_Navigation_display;
-				page_id = R.array.es_Navigation_pagename;
-				break;
-			case Constants.FRENCH:
-				display_id = R.array.fr_Navigation_display;
-				page_id = R.array.fr_Navigation_pagename;
-				break;
-			}
-			mNavigationItems.clear();
-			String navdisplay[] = getResources().getStringArray(display_id);
-			String navpage[] = getResources().getStringArray(page_id);
-			for (int i = 0; i < navdisplay.length; i++) {
-				mNavigationItems.add(new NavMenuItem(navdisplay[i], navpage[i]));
-			}
+		switch (language) {
+		case Constants.GERMAN:
+			display_id = R.array.de_Navigation_display;
+			page_id = R.array.de_Navigation_pagename;
+			break;
+		case Constants.ENGLISH:
+			display_id = R.array.en_Navigation_display;
+			page_id = R.array.en_Navigation_pagename;
+			break;
+		case Constants.SPANISH:
+			display_id = R.array.es_Navigation_display;
+			page_id = R.array.es_Navigation_pagename;
+			break;
+		case Constants.FRENCH:
+			display_id = R.array.fr_Navigation_display;
+			page_id = R.array.fr_Navigation_pagename;
 			break;
 		}
-
+		mNavigationItems.clear();
+		String navdisplay[] = getResources().getStringArray(display_id);
+		String navpage[] = getResources().getStringArray(page_id);
+		for (int i = 0; i < navdisplay.length; i++) {
+			mNavigationItems.add(new NavMenuItem(navdisplay[i], navpage[i]));
+		}
 	}
 
 	@Override
@@ -137,7 +132,9 @@ public class NavMenuFragment extends Fragment implements OnClickListener {
 		case R.id.appSettingsLayout:
 			mListener.onSettingsSelected();
 			break;
+		case R.id.favoritesLayout:
+			mListener.onFavoritesSelected();
+			break;
 		}
-
 	}
 }

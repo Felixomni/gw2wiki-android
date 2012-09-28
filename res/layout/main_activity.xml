@@ -132,6 +132,16 @@
             android:singleLine="true"
             android:textSize="16sp"
             android:textStyle="bold" />
+        
+        <ImageView
+            android:id="@+id/favoritesBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/nav_favorites_off"
+            />
     </RelativeLayout>
 
     <ImageView

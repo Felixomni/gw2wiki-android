@@ -7,6 +7,10 @@ public final class PrefsManager {
 	private static final String EXTERNAL_LINK_WARNING = "ext_warning";
 	private static final String START_PAGE = "start_page";
 	private static final String WIKI_LANGUAGE = "wiki_language";
+	private static final String FAVORITES_ENGLISH = "favorites_english";
+	private static final String FAVORITES_GERMAN = "favorites_german";
+	private static final String FAVORITES_SPANISH = "favorites_spanish";
+	private static final String FAVORITES_FRENCH = "favorites_french";
 
 	private volatile static PrefsManager sUniqueInstance;
 
@@ -56,5 +60,40 @@ public final class PrefsManager {
 
 	public void setWikiLanguage(int language) {
 		mEditor.putInt(WIKI_LANGUAGE, language);
+	}
+
+	public String getFavorites() {
+		switch (getWikiLanguage()) {
+		case Constants.ENGLISH:
+			return mSharedPreferences.getString(FAVORITES_ENGLISH, null);
+		case Constants.GERMAN:
+			return mSharedPreferences.getString(FAVORITES_GERMAN, null);
+		case Constants.SPANISH:
+			return mSharedPreferences.getString(FAVORITES_SPANISH, null);
+		case Constants.FRENCH:
+			return mSharedPreferences.getString(FAVORITES_FRENCH, null);
+		default:
+			return null;
+		}
+	}
+
+	public void setFavorites(String favoritesJSON) {
+		switch (getWikiLanguage()) {
+		case Constants.ENGLISH:
+			mEditor.putString(FAVORITES_ENGLISH, favoritesJSON);
+			break;
+		case Constants.GERMAN:
+			mEditor.putString(FAVORITES_GERMAN, favoritesJSON);
+			break;
+		case Constants.SPANISH:
+			mEditor.putString(FAVORITES_SPANISH, favoritesJSON);
+			break;
+		case Constants.FRENCH:
+			mEditor.putString(FAVORITES_FRENCH, favoritesJSON);
+			break;
+		default:
+			break;
+		}
+		mEditor.commit();
 	}
 }

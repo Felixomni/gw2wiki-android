@@ -11,4 +11,6 @@ public interface MainListener {
 	public void onNavItemSelected(String pageName);
 
 	public void onSettingsSelected();
+
+	public void onFavoritesSelected();
 }

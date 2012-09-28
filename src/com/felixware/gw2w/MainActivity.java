@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -64,13 +66,13 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 	private EditText mSearchBox;
 	private TextView mPageTitle;
 	private ImageButton mSearchBtn;
-	private ImageView mHomeLogo, mNavBtn, mCancelSearchBtn;
+	private ImageView mHomeLogo, mNavBtn, mFavoriteBtn, mCancelSearchBtn;
 	private ProgressBar mSearchSpinner;
 	private ExternalLinkWarningDialog mExtDialog;
 	private ErrorDialog mErrDialog;
-	private Boolean isNavShown = false, isGoingBack = false, isViewDown = false, isNotSelectedResult = true;
+	private Boolean isNavShown = false, isGoingBack = false, isViewDown = false, isNotSelectedResult = true, isFavorite = false;
 	private NavMenuFragment mNavFragment = new NavMenuFragment();
-	private List<String> backHistory = new ArrayList<String>();
+	private List<String> backHistory = new ArrayList<String>(), favorites = new ArrayList<String>();
 	private String currentPageTitle;
 	private int lastLanguage = -1;
 	private Handler mSearchHandle;
@@ -117,6 +119,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 		mNavBtn = (ImageView) findViewById(R.id.navBtn);
 		mNavBtn.setOnClickListener(this);
+
+		mFavoriteBtn = (ImageView) findViewById(R.id.favoritesBtn);
+		mFavoriteBtn.setOnClickListener(this);
 
 		mSearchBox = (EditText) findViewById(R.id.searchET);
 		mSearchBox.setOnEditorActionListener(this);
@@ -178,6 +183,21 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 			hideKeyboard();
 			mSearchBox.setText("");
 			break;
+		case R.id.favoritesBtn:
+			if (currentPageTitle != null) {
+				if (!isFavorite) {
+					favorites.add(currentPageTitle);
+					PrefsManager.getInstance(this).setFavorites(Constants.getJSONStringFromList(favorites));
+					mFavoriteBtn.setImageResource(R.drawable.nav_favorites_on);
+					isFavorite = true;
+				} else {
+					favorites.remove(currentPageTitle);
+					PrefsManager.getInstance(this).setFavorites(Constants.getJSONStringFromList(favorites));
+					mFavoriteBtn.setImageResource(R.drawable.nav_favorites_off);
+					isFavorite = false;
+				}
+			}
+			break;
 		}
 
 	}
@@ -207,6 +227,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 	}
 
 	private void searchForTerm() {
+		mSearchSpinner.setVisibility(View.GONE);
 		hideKeyboard();
 		getContent(mSearchBox.getText().toString());
 		mSearchBox.setText("");
@@ -264,6 +285,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 	@Override
 	public void onRequestError(RequestTask request, WebServiceException e) {
 		mSearchSpinner.setVisibility(View.GONE);
+		mWebSpinner.setVisibility(View.GONE);
 		mErrDialog = new ErrorDialog(this, e.getErrorCode());
 		mErrDialog.show();
 
@@ -281,7 +303,22 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 			isGoingBack = false;
 		}
 		currentPageTitle = title;
+		mFavoriteBtn.setImageResource(R.drawable.nav_favorites_off);
+		isFavorite = false;
+		determineFavoriteStatus();
 		mWebSpinner.setVisibility(View.GONE);
+	}
+
+	private void determineFavoriteStatus() {
+		favorites = Constants.getFavoritesListFromJSON(this);
+		for (String pageName : favorites) {
+			if (pageName.equals(currentPageTitle)) {
+				isFavorite = true;
+				mFavoriteBtn.setImageResource(R.drawable.nav_favorites_on);
+				break;
+			}
+		}
+
 	}
 
 	@Override
@@ -301,6 +338,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		if (lastLanguage != PrefsManager.getInstance(this).getWikiLanguage()) {
 			backHistory.clear();
 			mWebContent.clearView();
+			mFavoriteBtn.setImageResource(R.drawable.nav_favorites_off);
+			currentPageTitle = null;
+			mPageTitle.setText("");
 			getContent(PrefsManager.getInstance(this).getStartPage());
 		}
 	}
@@ -475,6 +515,34 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		default:
 			break;
 		}
+
+	}
+
+	@Override
+	public void onFavoritesSelected() {
+		favorites = Constants.getFavoritesListFromJSON(this);
+		if (favorites.isEmpty()) {
+			// TODO
+		} else {
+			buildFavoritesDialog();
+		}
+	}
+
+	private void buildFavoritesDialog() {
+		final String favoritesArray[] = new String[favorites.size()];
+		favorites.toArray(favoritesArray);
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.favorites_dialog_title);
+		builder.setItems(favoritesArray, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				MainActivity.this.getContent(favoritesArray[which]);
+			}
+
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
 
 	}
 

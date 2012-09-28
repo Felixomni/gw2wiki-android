@@ -24,12 +24,37 @@
                 android:text="@string/nav_navigation_header" />
         </LinearLayout>
         
-        <RelativeLayout
-            android:id="@+id/appSettingsLayout"
+                <RelativeLayout
+            android:id="@+id/favoritesLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/navigationLayout"
             android:layout_marginTop="10dp"
+            android:background="@drawable/selector_nav_item_bg"
+            >
+            
+            <ImageView
+                android:id="@+id/favoritesIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/nav_favorites_menu"
+                />
+            <TextView
+                android:id="@+id/favoritesLabel"
+                style="@style/NavMenuHeader"
+                android:text="@string/nav_favorites"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/favoritesIcon"
+                />            
+        </RelativeLayout>
+        
+        <RelativeLayout
+            android:id="@+id/appSettingsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/favoritesLayout"
+            android:layout_marginTop="2dp"
             android:background="@drawable/selector_nav_item_bg"
             >
             
@@ -48,6 +73,8 @@
                 android:layout_toRightOf="@+id/settingsIcon"
                 />            
         </RelativeLayout>
+        
+        
     </RelativeLayout>
 
 </ScrollView>

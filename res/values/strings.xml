@@ -27,6 +27,7 @@
     <string name="nav_support_header">Support</string>
     <string name="nav_toolbox_header">Toolbox</string>
     <string name="nav_app_settings">App settings</string>
+    <string name="nav_favorites">Favorites</string>
 
 <!-- 	  Settings -->
     <string name="settings_title">Settings</string>
@@ -42,5 +43,8 @@
     <string name="language_german">German</string>
     <string name="language_spanish">Spanish</string>
     <string name="language_french">French</string>
+    
+<!--	  Favorites -->
+	<string name="favorites_dialog_title">Your favorite pages</string>
 
 </resources>
