@@ -23,12 +23,11 @@ public class ArticleWebViewClient extends WebViewClient {
 			if (Uri.parse(url).getQueryParameter("action") != null && Uri.parse(url).getQueryParameter("action").equals("edit")) {
 				Toast.makeText(mContext, "Sorry, editing not supported", Toast.LENGTH_SHORT).show();
 			} else {
-				mListener.onLink(url);
+				mListener.onLink((Uri.decode(url).toString()));
 			}
 		} else {
 			mListener.onExternalLink(url);
 		}
 		return true;
 	}
-
 }
