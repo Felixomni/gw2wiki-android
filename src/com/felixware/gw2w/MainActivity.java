@@ -44,10 +44,12 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.felixware.gw2w.dialogs.ErrorDialog;
 import com.felixware.gw2w.dialogs.ExternalLinkWarningDialog;
+import com.felixware.gw2w.fragments.ImageDialogFragment;
 import com.felixware.gw2w.fragments.NavMenuFragment;
 import com.felixware.gw2w.http.RequestTask;
 import com.felixware.gw2w.http.WebService;
 import com.felixware.gw2w.http.WebService.GetContentListener;
+import com.felixware.gw2w.http.WebService.GetImageUrlListener;
 import com.felixware.gw2w.http.WebService.GetSearchResultsListener;
 import com.felixware.gw2w.http.WebServiceException;
 import com.felixware.gw2w.listeners.MainListener;
@@ -56,7 +58,7 @@ import com.felixware.gw2w.utilities.Constants;
 import com.felixware.gw2w.utilities.LinkStripper;
 import com.felixware.gw2w.utilities.PrefsManager;
 
-public class MainActivity extends FragmentActivity implements OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener {
+public class MainActivity extends FragmentActivity implements OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener, GetImageUrlListener {
 	private static final String NAV_STATE = "nav_state";
 
 	private WebView mWebContent;
@@ -544,6 +546,19 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		AlertDialog alert = builder.create();
 		alert.show();
 
+	}
+
+	@Override
+	public void onImageSelected(String url) {
+		Matcher matcher = Pattern.compile("(?<=wiki/).*").matcher(url);
+		matcher.find();
+		WebService.getInstance(this).getImageUrl(this, matcher.group());
+	}
+
+	@Override
+	public void didGetImageUrl(RequestTask request, String url) {
+		ImageDialogFragment newFragment = ImageDialogFragment.newInstance(url);
+		newFragment.show(getSupportFragmentManager(), "dialog");
 	}
 
 }

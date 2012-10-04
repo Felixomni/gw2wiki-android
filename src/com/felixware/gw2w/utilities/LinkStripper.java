@@ -2,6 +2,7 @@ package com.felixware.gw2w.utilities;
 
 import jregex.Pattern;
 import jregex.Replacer;
+import android.util.Log;
 
 public class LinkStripper {
 	private static String mInput;
@@ -14,7 +15,7 @@ public class LinkStripper {
 
 		removeEditSections();
 
-		// Log.i("Regex", mInput);
+		Log.i("Regex", mInput);
 
 		return mInput;
 	}
@@ -32,6 +33,18 @@ public class LinkStripper {
 		Replacer replacer = pattern.replacer("");
 		String result = replacer.replace(mInput);
 		mInput = result;
+	}
+
+	private static void removeFileLinks() {
+		Pattern pattern = new Pattern("<a href=\".+?\" class=\"image\">(.+?)<\\/a>");
+		Replacer replacer = pattern.replacer("$1");
+		String result = replacer.replace(mInput);
+
+		Pattern pattern2 = new Pattern("(<img alt=\".+?\" src=\"(.+?)\".+?/>)");
+		Replacer replacer2 = pattern2.replacer("<a href=\"$2\">$1</a>");
+		String result2 = replacer2.replace(result);
+		mInput = result2;
+
 	}
 
 }

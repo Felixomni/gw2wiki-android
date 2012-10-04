@@ -145,4 +145,39 @@ public final class WebService {
 		NameValuePair[] params = { new BasicNameValuePair("action", "opensearch"), new BasicNameValuePair("limit", Integer.toString(limit)), new BasicNameValuePair("search", searchText) };
 		return makeRequest(getSearchResultsRequest, params);
 	}
+
+	public interface GetImageUrlListener extends Listener {
+		public void didGetImageUrl(RequestTask request, String url);
+	}
+
+	public RequestTask getImageUrl(final GetImageUrlListener listener, final String pageName) {
+		RequestTask getImageUrlRequest = new GetRequestTask(mContext, "/api.php");
+
+		getImageUrlRequest.setListener(new RequestListener() {
+			@Override
+			public void onRequestFailed(RequestTask request) {
+				requestFailedNoConnection(request, listener);
+			}
+
+			@Override
+			public void onRequestCompleted(RequestTask request, String response) {
+				Log.i(TAG, response);
+				try {
+					JSONObject responseJSON = new JSONObject(response);
+					JSONObject query = new JSONObject(responseJSON.getString("query"));
+					JSONObject pages = new JSONObject(query.getString("pages"));
+					JSONArray pageid = pages.names();
+					JSONObject page = new JSONObject(pages.getString(pageid.getString(0)));
+					JSONArray image_info = new JSONArray(page.getString("imageinfo"));
+					JSONObject image = new JSONObject(image_info.getString(0));
+					String image_url = image.getString("url");
+					listener.didGetImageUrl(request, image_url);
+				} catch (JSONException e) {
+				}
+			}
+		});
+
+		NameValuePair[] params = { new BasicNameValuePair("action", "query"), new BasicNameValuePair("prop", "imageinfo"), new BasicNameValuePair("iiprop", "url"), new BasicNameValuePair("format", "json"), new BasicNameValuePair("titles", pageName) };
+		return makeRequest(getImageUrlRequest, params);
+	}
 }
