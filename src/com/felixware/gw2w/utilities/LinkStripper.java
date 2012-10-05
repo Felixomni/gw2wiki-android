@@ -2,7 +2,6 @@ package com.felixware.gw2w.utilities;
 
 import jregex.Pattern;
 import jregex.Replacer;
-import android.util.Log;
 
 public class LinkStripper {
 	private static String mInput;
@@ -15,7 +14,7 @@ public class LinkStripper {
 
 		removeEditSections();
 
-		Log.i("Regex", mInput);
+		// Log.i("Regex", mInput);
 
 		return mInput;
 	}
@@ -35,6 +34,7 @@ public class LinkStripper {
 		mInput = result;
 	}
 
+	// Ended up not using this, but it might be useful eventually
 	private static void removeFileLinks() {
 		Pattern pattern = new Pattern("<a href=\".+?\" class=\"image\">(.+?)<\\/a>");
 		Replacer replacer = pattern.replacer("$1");

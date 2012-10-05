@@ -80,7 +80,6 @@ public class DrawableDownloader {
 			imageView.setImageDrawable(drawable);
 			if (loaderBox != null)
 				loaderBox.setVisibility(View.GONE);
-			mListener.onDrawableLoaded();
 		} else {
 			if (loaderBox != null)
 				loaderBox.setVisibility(View.VISIBLE);
@@ -112,6 +111,7 @@ public class DrawableDownloader {
 					if (imageView.isShown())
 						if (msg.obj != null) {
 							imageView.setImageDrawable((Drawable) msg.obj);
+							mListener.onDrawableLoaded();
 							if (loaderBox != null)
 								loaderBox.setVisibility(View.GONE);
 						} else {
