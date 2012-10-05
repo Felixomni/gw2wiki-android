@@ -34,6 +34,7 @@ public class DrawableDownloader {
 	public static int MAX_CACHE_SIZE = 80;
 	public int THREAD_POOL_SIZE = 3;
 	private static volatile DrawableDownloader instance = null;
+	private static DrawableListener mListener;
 
 	/**
 	 * Constructor
@@ -42,7 +43,7 @@ public class DrawableDownloader {
 		mThreadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 	}
 
-	public static DrawableDownloader getInstance() {
+	public static DrawableDownloader getInstance(DrawableListener listener) {
 		if (instance == null) {
 			synchronized (DrawableDownloader.class) {
 				if (instance == null) {
@@ -50,6 +51,7 @@ public class DrawableDownloader {
 				}
 			}
 		}
+		mListener = listener;
 		return instance;
 	}
 
@@ -64,6 +66,10 @@ public class DrawableDownloader {
 		mImageViews.clear();
 	}
 
+	public interface DrawableListener {
+		public void onDrawableLoaded();
+	}
+
 	public void loadDrawable(final String url, final ImageView imageView, RelativeLayout loaderBox, Drawable placeholder) {
 		mImageViews.put(imageView, url);
 		Drawable drawable = getDrawableFromCache(url);
@@ -74,6 +80,7 @@ public class DrawableDownloader {
 			imageView.setImageDrawable(drawable);
 			if (loaderBox != null)
 				loaderBox.setVisibility(View.GONE);
+			mListener.onDrawableLoaded();
 		} else {
 			if (loaderBox != null)
 				loaderBox.setVisibility(View.VISIBLE);

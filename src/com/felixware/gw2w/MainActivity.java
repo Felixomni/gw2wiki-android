@@ -44,6 +44,7 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.felixware.gw2w.dialogs.ErrorDialog;
 import com.felixware.gw2w.dialogs.ExternalLinkWarningDialog;
+import com.felixware.gw2w.dialogs.NoFavoritesDialog;
 import com.felixware.gw2w.fragments.ImageDialogFragment;
 import com.felixware.gw2w.fragments.NavMenuFragment;
 import com.felixware.gw2w.http.RequestTask;
@@ -99,7 +100,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 				toggleNav();
 			}
 		} else {
-			getContent(PrefsManager.getInstance(this).getStartPage());
+			getContent(Constants.getStartPage(this));
 		}
 	}
 
@@ -343,7 +344,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 			mFavoriteBtn.setImageResource(R.drawable.nav_favorites_off);
 			currentPageTitle = null;
 			mPageTitle.setText("");
-			getContent(PrefsManager.getInstance(this).getStartPage());
+			getContent(Constants.getStartPage(this));
 		}
 	}
 
@@ -524,7 +525,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 	public void onFavoritesSelected() {
 		favorites = Constants.getFavoritesListFromJSON(this);
 		if (favorites.isEmpty()) {
-			// TODO
+			NoFavoritesDialog dialog = new NoFavoritesDialog(this);
+			dialog.show();
 		} else {
 			buildFavoritesDialog();
 		}

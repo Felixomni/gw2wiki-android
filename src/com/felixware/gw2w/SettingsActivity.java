@@ -7,14 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.felixware.gw2w.utilities.Constants;
 import com.felixware.gw2w.utilities.PrefsManager;
 
 public class SettingsActivity extends Activity implements OnClickListener {
-	private EditText mStartPageBox;
 	private TextView mCurrentLanguage;
 	private Button mChangeLanguageBtn;
 
@@ -27,7 +25,6 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	}
 
 	private void bindViews() {
-		mStartPageBox = (EditText) findViewById(R.id.startPageBox);
 		mCurrentLanguage = (TextView) findViewById(R.id.setWikiLanguageCurrent);
 		mChangeLanguageBtn = (Button) findViewById(R.id.setWikiLanguageBtn);
 		mChangeLanguageBtn.setOnClickListener(this);
@@ -35,7 +32,6 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	}
 
 	private void setupViews() {
-		mStartPageBox.setText(PrefsManager.getInstance(this).getStartPage());
 		mCurrentLanguage.setText(String.format(getResources().getString(R.string.settings_wiki_language_current), Constants.getLanguage(this, PrefsManager.getInstance(this).getWikiLanguage())));
 
 	}
@@ -68,7 +64,6 @@ public class SettingsActivity extends Activity implements OnClickListener {
 	}
 
 	protected void setLanguage(int language) {
-		// Toast.makeText(this, Integer.toString(language), Toast.LENGTH_SHORT).show();
 		PrefsManager.getInstance(this).setWikiLanguage(language);
 		mCurrentLanguage.setText(String.format(getResources().getString(R.string.settings_wiki_language_current), Constants.getLanguage(this, language)));
 	}
@@ -78,11 +73,4 @@ public class SettingsActivity extends Activity implements OnClickListener {
 		setupViews();
 		super.onResume();
 	}
-
-	@Override
-	protected void onPause() {
-		PrefsManager.getInstance(this).setStartPage(mStartPageBox.getText().toString());
-		super.onPause();
-	}
-
 }

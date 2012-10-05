@@ -29,7 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/navigationLayout"
-            android:layout_marginTop="5dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
             android:background="@drawable/selector_nav_item_bg"
             >
             <TextView
@@ -45,7 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/favoritesLayout"
-            android:layout_marginTop="5dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
             android:background="@drawable/selector_nav_item_bg"
             >
             <TextView

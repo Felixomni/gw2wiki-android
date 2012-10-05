@@ -23,6 +23,11 @@ public class Constants {
 
 	public static final String SUFFIX_RENDER = "&action=render";
 
+	public static final String MAIN_PAGE_ENGLISH = "Main Page";
+	public static final String MAIN_PAGE_GERMAN = "Hauptseite";
+	public static final String MAIN_PAGE_SPANISH = "P‡gina principal";
+	public static final String MAIN_PAGE_FRENCH = "Accueil";
+
 	public static final int ERROR_CONNECTION = 0;
 	public static final int ERROR_PAGE_DOES_NOT_EXIST = 1;
 	public static final int ERROR_SERVER = 2;
@@ -74,6 +79,22 @@ public class Constants {
 			return BASE_URL_SPANISH;
 		case Constants.FRENCH:
 			return BASE_URL_FRENCH;
+		default:
+			return null;
+		}
+	}
+
+	public static String getStartPage(Context context) {
+		int language = PrefsManager.getInstance(context).getWikiLanguage();
+		switch (language) {
+		case Constants.ENGLISH:
+			return MAIN_PAGE_ENGLISH;
+		case Constants.GERMAN:
+			return MAIN_PAGE_GERMAN;
+		case Constants.SPANISH:
+			return MAIN_PAGE_SPANISH;
+		case Constants.FRENCH:
+			return MAIN_PAGE_FRENCH;
 		default:
 			return null;
 		}

@@ -52,36 +52,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp" >
-
-            <RelativeLayout
-                android:id="@+id/startPageLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true" >
-                
-                <TextView
-                    android:id="@+id/startPageLabel"
-                    style="@style/SettingsLabel"
-                    android:text="@string/settings_start_page_label"
-                    />
-                
-                <EditText
-                    android:id="@+id/startPageBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/startPageLabel"
-                    android:layout_marginTop="5dp"
-                    android:inputType="textCapSentences|textNoSuggestions"
-                    android:hint="@string/settings_start_page_hint"
-                    />              
-                
-            </RelativeLayout>
             
             <RelativeLayout
                 android:id="@+id/setWikiLanguageLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/startPageLayout"
                 android:layout_marginTop="10dp"
                 >
                 

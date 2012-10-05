@@ -2,22 +2,24 @@ package com.felixware.gw2w.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.felixware.gw2w.R;
 import com.felixware.gw2w.utilities.DrawableDownloader;
+import com.felixware.gw2w.utilities.DrawableDownloader.DrawableListener;
 
-public class ImageDialogFragment extends DialogFragment implements OnClickListener {
+public class ImageDialogFragment extends DialogFragment implements OnClickListener, DrawableListener {
 	private static final String IMAGE_URL = "image_url";
 	private String image_url;
 	private ImageView mImageView;
 	private Button mCloseBtn;
+	private ProgressBar mSpinner;
 
 	public static ImageDialogFragment newInstance(String url) {
 		ImageDialogFragment f = new ImageDialogFragment();
@@ -40,10 +42,11 @@ public class ImageDialogFragment extends DialogFragment implements OnClickListen
 
 		mImageView = (ImageView) v.findViewById(R.id.image);
 
+		mSpinner = (ProgressBar) v.findViewById(R.id.spinner);
+
 		mCloseBtn = (Button) v.findViewById(R.id.closeBtn);
 		mCloseBtn.setOnClickListener(this);
-		Log.i("IEJFE", image_url);
-		DrawableDownloader.getInstance().loadDrawable(image_url, mImageView, null, null);
+		DrawableDownloader.getInstance(this).loadDrawable(image_url, mImageView, null, null);
 
 		return v;
 	}
@@ -54,6 +57,11 @@ public class ImageDialogFragment extends DialogFragment implements OnClickListen
 			this.dismiss();
 		}
 
+	}
+
+	@Override
+	public void onDrawableLoaded() {
+		mSpinner.setVisibility(View.GONE);
 	}
 
 }

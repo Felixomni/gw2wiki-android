@@ -47,5 +47,7 @@
     
 <!--	  Favorites -->
 	<string name="favorites_dialog_title">Your favorite pages</string>
+	<string name="no_favorites_dialog_title">You have no favorites!</string>
+	<string name="no_favorites_dialog_message">You haven\'t added any favorite articles yet. To mark an article as a favorite, tap the heart next to its title. </string>
 
 </resources>
