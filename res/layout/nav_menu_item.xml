@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/selector_nav_item_bg"
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp"
    	>
    	<ImageView
    	    android:id="@+id/bullet"

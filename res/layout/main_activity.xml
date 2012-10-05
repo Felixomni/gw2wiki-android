@@ -117,34 +117,30 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:padding="5dp"
+            android:padding="2dp"
             android:src="@drawable/nav_arrow_down" />
 
         <TextView
             android:id="@+id/pageTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:ellipsize="end"
             android:gravity="center"
-            android:layout_marginRight="50dp"
-            android:layout_marginLeft="50dp"
             android:padding="3dp"
             android:singleLine="true"
             android:textSize="16sp"
             android:textStyle="bold" />
-        
+
         <ImageView
             android:id="@+id/favoritesBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:paddingTop="1dp"
-            android:paddingBottom="1dp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/nav_favorites_off"
-            />
+            android:layout_centerVertical="true"
+            android:padding="2dp"
+            android:src="@drawable/nav_favorites_off" />
     </RelativeLayout>
 
     <ImageView
@@ -190,16 +186,16 @@
                 style="@android:style/Widget.ProgressBar.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:indeterminate="true" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/webSpinner"
                 android:layout_centerHorizontal="true"
-                android:text="@string/loading"
-                />
+                android:text="@string/loading" />
         </RelativeLayout>
     </RelativeLayout>
 
