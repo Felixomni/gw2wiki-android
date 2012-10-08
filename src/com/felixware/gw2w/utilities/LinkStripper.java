@@ -1,7 +1,9 @@
 package com.felixware.gw2w.utilities;
 
+import jregex.Matcher;
 import jregex.Pattern;
 import jregex.Replacer;
+import android.util.Log;
 
 public class LinkStripper {
 	private static String mInput;
@@ -45,6 +47,17 @@ public class LinkStripper {
 		String result2 = replacer2.replace(result);
 		mInput = result2;
 
+	}
+
+	public static String resolveRedirect(String content) {
+		Pattern pattern = new Pattern("<ol><li>REDIRECT <a href=.+?\">(.+?)<\\/a>");
+		Matcher matcher = pattern.matcher(content);
+		if (matcher.find()) {
+			Log.i("EJIFE", matcher.group(1));
+			return matcher.group(1);
+		} else {
+			return content;
+		}
 	}
 
 }

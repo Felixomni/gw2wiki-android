@@ -296,20 +296,24 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 	@Override
 	public void didGetContent(RequestTask request, String content, String title) {
-		mWebContent.loadDataWithBaseURL(Constants.getBaseURL(this), LinkStripper.strip(content), "text/html", "UTF-8", title);
-		mPageTitle.setText(title);
-		// Log.i("checking titles", "current page title is " + currentPageTitle + " new title is " + title);
-		if (!isGoingBack && (currentPageTitle == null || !currentPageTitle.equals(title))) {
-			// Log.i("back history", "Adding " + title + " to the back history");
-			backHistory.add(title);
+		if (content.contains("<ol><li>REDIRECT")) {
+			getContent(LinkStripper.resolveRedirect(content));
 		} else {
-			isGoingBack = false;
+			mWebContent.loadDataWithBaseURL(Constants.getBaseURL(this), LinkStripper.strip(content), "text/html", "UTF-8", title);
+			mPageTitle.setText(title);
+			// Log.i("checking titles", "current page title is " + currentPageTitle + " new title is " + title);
+			if (!isGoingBack && (currentPageTitle == null || !currentPageTitle.equals(title))) {
+				// Log.i("back history", "Adding " + title + " to the back history");
+				backHistory.add(title);
+			} else {
+				isGoingBack = false;
+			}
+			currentPageTitle = title;
+			mFavoriteBtn.setImageResource(R.drawable.nav_favorites_off);
+			isFavorite = false;
+			determineFavoriteStatus();
+			mWebSpinner.setVisibility(View.GONE);
 		}
-		currentPageTitle = title;
-		mFavoriteBtn.setImageResource(R.drawable.nav_favorites_off);
-		isFavorite = false;
-		determineFavoriteStatus();
-		mWebSpinner.setVisibility(View.GONE);
 	}
 
 	private void determineFavoriteStatus() {
