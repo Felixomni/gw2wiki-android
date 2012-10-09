@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -106,6 +107,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 	private void bindViews() {
 
+		Typeface tf = Typeface.createFromAsset(this.getAssets(), "easonpro-bold-webfont.ttf");
+
 		mHomeLogo = (ImageView) findViewById(R.id.logo);
 		mHomeLogo.setOnClickListener(this);
 
@@ -113,6 +116,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		mSearchResultsListView.setOnItemClickListener(this);
 
 		mNavBar = (RelativeLayout) findViewById(R.id.navBar);
+		mNavBar.bringToFront();
 
 		mWebSpinner = (RelativeLayout) findViewById(R.id.webSpinnerLayout);
 
@@ -140,6 +144,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		mSearchSpinner = (ProgressBar) findViewById(R.id.spinner);
 
 		mPageTitle = (TextView) findViewById(R.id.pageTitle);
+		mPageTitle.setTypeface(tf);
 	}
 
 	@Override
@@ -147,6 +152,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_BACK:
 			if (isViewDown) {
+				hideKeyboard();
+				mSearchBox.setText("");
 				animateViewUp();
 				return true;
 			} else if (backHistory.size() > 1) {
@@ -209,11 +216,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (isNavShown) {
 			isNavShown = false;
-			mNavBtn.setImageResource(R.drawable.nav_arrow_down);
+			mNavBtn.setImageResource(R.drawable.nav_menu_off);
 			ft.remove(mNavFragment);
 		} else {
 			isNavShown = true;
-			mNavBtn.setImageResource(R.drawable.nav_arrow_up);
+			mNavBtn.setImageResource(R.drawable.nav_menu_on);
 			ft.add(R.id.navMenuContent, mNavFragment);
 			mNavContent.bringToFront();
 		}

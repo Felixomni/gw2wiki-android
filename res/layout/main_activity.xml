@@ -16,23 +16,44 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@drawable/bg_white"
-        android:padding="4dp" >
+        >
+        
+        <ImageView
+            android:id="@+id/topBarBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/bg_top_bar"
+            android:scaleType="matrix"
+            />
 
         <ImageView
             android:id="@+id/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/gw2logo_top" />
+            android:paddingTop="4dp"
+            android:src="@drawable/newlogo"
+            />
+        
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+                        android:layout_alignBottom="@+id/topBarBackground"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="4dp">
 
         <ProgressBar
             android:id="@+id/spinner"
             style="@android:style/Widget.ProgressBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_marginTop="4dp"
             android:layout_marginRight="5dp"
             android:layout_toLeftOf="@+id/cancelSearchBtn"
+			android:layout_centerVertical="true"
             android:indeterminate="true"
             android:visibility="gone" />
 
@@ -40,6 +61,7 @@
             android:id="@+id/cancelSearchBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+			android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:layout_toLeftOf="@+id/searchLayout"
             android:src="@drawable/nav_cancel"
@@ -49,7 +71,6 @@
             android:id="@+id/searchLayout"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/logo"
             android:layout_alignParentRight="true"
             android:background="@drawable/shape_search_box" >
 
@@ -60,10 +81,11 @@
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/searchBtn"
                 android:background="#00000000"
+                android:textSize="20sp"
                 android:hint="@string/hint_search"
                 android:imeOptions="actionSearch|flagNoExtractUi"
                 android:inputType="textCapSentences|textNoSuggestions"
-                android:padding="2dp"
+                android:padding="4dp"
                 android:singleLine="true" />
 
             <ImageButton
@@ -71,8 +93,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:background="#00000000"
                 android:src="@drawable/ic_action_search" />
+        </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 
@@ -101,24 +125,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/topBar"
-        android:background="@drawable/bg_grey" >
-
-        <ImageView
-            android:id="@+id/rule1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/splot" />
+        android:background="@drawable/bg_nav_bar"
+        >
 
         <ImageView
             android:id="@+id/navBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
             android:padding="2dp"
-            android:src="@drawable/nav_arrow_down" />
+            android:src="@drawable/nav_menu_off" />
 
         <TextView
             android:id="@+id/pageTitle"
@@ -131,39 +147,32 @@
             android:ellipsize="end"
             android:padding="3dp"
             android:singleLine="true"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            />
 
         <ImageView
             android:id="@+id/favoritesBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:padding="2dp"
             android:src="@drawable/nav_favorites_off" />
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/rule2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/navBar"
-        android:scaleType="fitXY"
-        android:src="@drawable/splot" />
 
     <FrameLayout
         android:id="@+id/navMenuContent"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_below="@+id/rule2"
+        android:layout_below="@+id/navBar"
         android:layout_marginTop="-1dp" />
 
     <WebView
         android:id="@+id/webContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/rule2" />
+        android:layout_marginTop="-6dp"
+        android:layout_below="@+id/navBar" />
 
     <RelativeLayout
         android:id="@+id/webSpinnerLayout"
