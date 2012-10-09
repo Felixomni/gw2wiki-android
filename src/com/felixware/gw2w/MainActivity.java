@@ -225,7 +225,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		if (title != null && !title.equals("")) {
 			WebService.getInstance(this).cancelAllRequests();
 			mWebSpinner.setVisibility(View.VISIBLE);
-			WebService.getInstance(this).getContent(this, title);
+			if (PrefsManager.getInstance(this).getWikiLanguage() == Constants.ENGLISH) {
+				WebService.getInstance(this).getContentEnglish(this, title);
+			} else {
+				WebService.getInstance(this).getContent(this, title);
+			}
 		}
 	}
 

@@ -180,4 +180,56 @@ public final class WebService {
 		NameValuePair[] params = { new BasicNameValuePair("action", "query"), new BasicNameValuePair("prop", "imageinfo"), new BasicNameValuePair("iiprop", "url"), new BasicNameValuePair("format", "json"), new BasicNameValuePair("titles", pageName) };
 		return makeRequest(getImageUrlRequest, params);
 	}
+
+	public RequestTask getContentEnglish(final GetContentListener listener, final String title) {
+		RequestTask getContentEnglishRequest = new GetRequestTask(mContext, "/index.php");
+
+		getContentEnglishRequest.setListener(new RequestListener() {
+			@Override
+			public void onRequestFailed(RequestTask request) {
+				requestFailedNoConnection(request, listener);
+			}
+
+			@Override
+			public void onRequestCompleted(RequestTask request, String response) {
+				Log.i(TAG, response);
+				WebService.getInstance(mContext).getTitleEnglish(listener, title, response);
+			}
+		});
+
+		NameValuePair[] params = { new BasicNameValuePair("action", "render"), new BasicNameValuePair("title", title) };
+		return makeRequest(getContentEnglishRequest, params);
+	}
+
+	public RequestTask getTitleEnglish(final GetContentListener listener, String title, final String content) {
+		RequestTask getTitleEnglishRequest = new GetRequestTask(mContext, "/api.php");
+
+		getTitleEnglishRequest.setListener(new RequestListener() {
+			@Override
+			public void onRequestFailed(RequestTask request) {
+				requestFailedNoConnection(request, listener);
+			}
+
+			@Override
+			public void onRequestCompleted(RequestTask request, String response) {
+				Log.i(TAG, response);
+				try {
+					JSONObject responseJSON = new JSONObject(response);
+					JSONObject query = new JSONObject(responseJSON.getString("query"));
+					JSONObject pages = new JSONObject(query.getString("pages"));
+					JSONArray pageid = pages.names();
+					JSONObject page = new JSONObject(pages.getString(pageid.getString(0)));
+					String response_title = page.getString("title");
+					Log.i(TAG, response_title);
+					listener.didGetContent(request, content, response_title);
+				} catch (JSONException e) {
+					requestFailed(request, listener, false, Constants.ERROR_PAGE_DOES_NOT_EXIST);
+				}
+			}
+		});
+
+		NameValuePair[] params = { new BasicNameValuePair("action", "query"), new BasicNameValuePair("prop", "info"), new BasicNameValuePair("format", "json"), new BasicNameValuePair("titles", title) };
+		return makeRequest(getTitleEnglishRequest, params);
+	}
+
 }
