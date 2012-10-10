@@ -43,6 +43,7 @@ public abstract class RequestTask {
 	}
 
 	public final void cancel() {
+		mHttpClient.close();
 		mAsyncTask.cancel(true);
 	}
 
