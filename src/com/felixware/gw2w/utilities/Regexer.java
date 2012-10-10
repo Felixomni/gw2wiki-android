@@ -1,64 +1,42 @@
 package com.felixware.gw2w.utilities;
 
-import jregex.Matcher;
-import jregex.Pattern;
-import jregex.Replacer;
+import java.util.regex.Pattern;
+
 
 public class Regexer {
-	private static String mInput;
+	private static final Pattern redLinkPattern = Pattern.compile("<a href=\"[^\"]+?\" class=\"new\" title=\"[^\"]+?\">(.+?)<\\/a>");
+	private static final Pattern editSectionPattern = Pattern.compile("<span class=\"editsection\">.+?<\\/span>");
+	private static final Pattern fileLinkPattern = Pattern.compile("<a href=\"[^\"]+?\" class=\"image\">(.+?)<\\/a>");
+	private static final Pattern fileInclusionPattern = Pattern.compile("(<img alt=\"[^\"]+?\" src=\"([^\"]+?)\".+?/>)");
+	private static final Pattern imageUrlPattern = Pattern.compile("(.+?)thumb/(.+?)\\..+?\\.(.+?)");
 
 	// Wooo! Take it off!
 	public static String strip(String input) {
-		mInput = input;
+		input = removeRedLinks(input);
+		input = removeEditSections(input);
+		input = removeFileLinks(input);
 
-		removeRedLinks();
-
-		removeEditSections();
-
-		removeFileLinks();
-
-		// Log.i("Regex", mInput);
-
-		return mInput;
+		return input;
 	}
 
-	private static void removeRedLinks() {
-		Pattern pattern = new Pattern("<a href=\"[^\"]+?\" class=\"new\" title=\"[^\"]+?\">(.+?)<\\/a>");
-		Replacer replacer = pattern.replacer("$1");
-		String result = replacer.replace(mInput);
-		mInput = result;
-
+	private static String removeRedLinks(String input) {
+		return redLinkPattern.matcher(input).replaceAll("$1");
 	}
 
-	private static void removeEditSections() {
-		Pattern pattern = new Pattern("<span class=\"editsection\">.+?<\\/span>");
-		Replacer replacer = pattern.replacer("");
-		String result = replacer.replace(mInput);
-		mInput = result;
+	private static String removeEditSections(String input) {
+		return editSectionPattern.matcher(input).replaceAll("");
 	}
 
-	private static void removeFileLinks() {
-		Pattern pattern = new Pattern("<a href=\"[^\"]+?\" class=\"image\">(.+?)<\\/a>");
-		Replacer replacer = pattern.replacer("$1");
-		String result = replacer.replace(mInput);
-
-		Pattern pattern2 = new Pattern("(<img alt=\"[^\"]+?\" src=\"([^\"]+?)\".+?/>)");
-		Replacer replacer2 = pattern2.replacer("<a href=\"$2\">$1</a>");
-		String result2 = replacer2.replace(result);
-		mInput = result2;
-
+	private static String removeFileLinks(String input) {
+		input = fileLinkPattern.matcher(input).replaceAll("$1");
+		return fileInclusionPattern.matcher(input).replaceAll("<a href=\"$2\">$1</a>");
 	}
 
 	public static String getImageUrl(String url) {
-		Pattern pattern = new Pattern("thumb/");
-		Matcher matcher = pattern.matcher(url);
-		if (matcher.find()) {
-			Pattern pattern2 = new Pattern("(.+?)thumb/(.+?)\\..+?\\.(.+?)");
-			Replacer replacer = pattern2.replacer("$1$2.$3");
-			return replacer.replace(url);
-		} else {
+		if (url.contains("thumb/"))
+			return imageUrlPattern.matcher(url).replaceFirst("$1$2.$3");
+		else
 			return url;
-		}
 	}
 
 }
