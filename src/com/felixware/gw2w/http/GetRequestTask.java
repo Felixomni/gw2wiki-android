@@ -36,6 +36,7 @@ public final class GetRequestTask extends RequestTask {
 			response.responseString = responseString;
 			Log.i(GetRequestTask.class.getSimpleName(), responseString);
 		} catch (IOException e) {
+			e.printStackTrace();
 			response.responseSucceeded = false;
 		}
 

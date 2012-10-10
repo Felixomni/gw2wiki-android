@@ -161,7 +161,6 @@ public final class WebService {
 
 			@Override
 			public void onRequestCompleted(RequestTask request, String response) {
-				Log.i(TAG, response);
 				try {
 					JSONObject responseJSON = new JSONObject(response);
 					JSONObject query = new JSONObject(responseJSON.getString("query"));
@@ -171,8 +170,10 @@ public final class WebService {
 					JSONArray image_info = new JSONArray(page.getString("imageinfo"));
 					JSONObject image = new JSONObject(image_info.getString(0));
 					String image_url = image.getString("url");
+					Log.i(TAG, image_url);
 					listener.didGetImageUrl(request, image_url);
 				} catch (JSONException e) {
+					e.printStackTrace();
 				}
 			}
 		});

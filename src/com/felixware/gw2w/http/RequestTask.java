@@ -21,12 +21,13 @@ public abstract class RequestTask {
 
 	protected RequestListener mListener;
 
-	protected AndroidHttpClient mHttpClient;
+	protected AndroidHttpClient mHttpClient = AndroidHttpClient.newInstance(Constants.userAgentString);
 
 	protected String mURL;
 
 	public RequestTask(Context context, String endpoint) {
 		mURL = Constants.getBaseURL(context) + endpoint;
+
 	}
 
 	void setListener(RequestListener listener) {
@@ -56,7 +57,6 @@ public abstract class RequestTask {
 
 		@Override
 		protected Response doInBackground(NameValuePair... params) {
-			mHttpClient = AndroidHttpClient.newInstance(null);
 			Response response = null;
 
 			if (params != null) {

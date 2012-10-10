@@ -21,12 +21,12 @@ public class Constants {
 	public static final String DOMAIN_SPANISH = "wiki-es.guildwars2.com";
 	public static final String DOMAIN_FRENCH = "wiki-fr.guildwars2.com";
 
-	public static final String SUFFIX_RENDER = "&action=render";
-
 	public static final String MAIN_PAGE_ENGLISH = "Main Page";
 	public static final String MAIN_PAGE_GERMAN = "Hauptseite";
 	public static final String MAIN_PAGE_SPANISH = "P‡gina principal";
 	public static final String MAIN_PAGE_FRENCH = "Accueil";
+
+	public static String userAgentString = "GW2WApp/1.0 (https://github.com/Felixomni/gw2wiki-android; felixomni@gmail.com)";
 
 	public static final int ERROR_CONNECTION = 0;
 	public static final int ERROR_PAGE_DOES_NOT_EXIST = 1;

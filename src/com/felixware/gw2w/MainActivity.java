@@ -44,7 +44,6 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.felixware.gw2w.dialogs.ErrorDialog;
-import com.felixware.gw2w.dialogs.ExternalLinkWarningDialog;
 import com.felixware.gw2w.dialogs.NoFavoritesDialog;
 import com.felixware.gw2w.fragments.ImageDialogFragment;
 import com.felixware.gw2w.fragments.NavMenuFragment;
@@ -70,9 +69,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 	private EditText mSearchBox;
 	private TextView mPageTitle;
 	private ImageButton mSearchBtn;
-	private ImageView mHomeLogo, mNavBtn, mFavoriteBtn, mCancelSearchBtn;
+	private ImageView mNavBtn, mFavoriteBtn, mCancelSearchBtn;
 	private ProgressBar mSearchSpinner;
-	private ExternalLinkWarningDialog mExtDialog;
 	private ErrorDialog mErrDialog;
 	private Boolean isNavShown = false, isGoingBack = false, isViewDown = false, isNotSelectedResult = true, isFavorite = false;
 	private NavMenuFragment mNavFragment = new NavMenuFragment();
@@ -108,9 +106,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 	private void bindViews() {
 
 		Typeface tf = Typeface.createFromAsset(this.getAssets(), "easonpro-bold-webfont.ttf");
-
-		mHomeLogo = (ImageView) findViewById(R.id.logo);
-		mHomeLogo.setOnClickListener(this);
 
 		mSearchResultsListView = (ListView) findViewById(R.id.searchResultsListView);
 		mSearchResultsListView.setOnItemClickListener(this);
@@ -185,7 +180,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		case R.id.searchBtn:
 			searchForTerm();
 			break;
-		case R.id.logo:
 		case R.id.navBtn:
 			toggleNav();
 			break;
@@ -216,16 +210,16 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		if (isNavShown) {
 			isNavShown = false;
-			mNavBtn.setImageResource(R.drawable.nav_menu_off);
 			ft.remove(mNavFragment);
+			ft.commit();
+			mNavBtn.setImageResource(R.drawable.nav_menu_off);
 		} else {
 			isNavShown = true;
-			mNavBtn.setImageResource(R.drawable.nav_menu_on);
 			ft.add(R.id.navMenuContent, mNavFragment);
 			mNavContent.bringToFront();
+			ft.commit();
+			mNavBtn.setImageResource(R.drawable.nav_menu_on);
 		}
-		ft.commit();
-
 	}
 
 	public void getContent(String title) {
@@ -264,8 +258,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 	@Override
 	public void onExternalLink(String url) {
 		if (PrefsManager.getInstance(this).getExternalWarning()) {
-			mExtDialog = new ExternalLinkWarningDialog(this, url);
-			mExtDialog.show();
+			buildExternalLinkDialog(url);
 		} else {
 			externalLink(url);
 		}
@@ -293,6 +286,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 	@Override
 	public void onNavItemSelected(String pageName) {
+		toggleNav();
 		getContent(pageName);
 	}
 
@@ -365,6 +359,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 	@Override
 	public void onSettingsSelected() {
+		toggleNav();
 		Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
 		startActivity(intent);
 	}
@@ -538,6 +533,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 	@Override
 	public void onFavoritesSelected() {
+		toggleNav();
 		favorites = Constants.getFavoritesListFromJSON(this);
 		if (favorites.isEmpty()) {
 			NoFavoritesDialog dialog = new NoFavoritesDialog(this);
@@ -565,15 +561,44 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 	}
 
+	private void buildExternalLinkDialog(final String url) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.external_link_title);
+		builder.setMessage(String.format(getResources().getString(R.string.external_link_text), url));
+		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				externalLink(url);
+			}
+
+		});
+		builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// nothing
+			}
+
+		});
+
+		AlertDialog alert = builder.create();
+		alert.show();
+
+	}
+
 	@Override
 	public void onImageSelected(String url) {
 		Matcher matcher = Pattern.compile("(?<=wiki/).*").matcher(url);
 		matcher.find();
 		WebService.getInstance(this).getImageUrl(this, matcher.group());
+		mWebSpinner.setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	public void didGetImageUrl(RequestTask request, String url) {
+		Log.i("infwi", url);
+		mWebSpinner.setVisibility(View.GONE);
 		ImageDialogFragment newFragment = ImageDialogFragment.newInstance(url);
 		newFragment.show(getSupportFragmentManager(), "dialog");
 	}
