@@ -23,7 +23,7 @@ public class Regexer {
 	}
 
 	private static void removeRedLinks() {
-		Pattern pattern = new Pattern("<a href=\".+?\" class=\"new\" title=\".+?\">(.+?)<\\/a>");
+		Pattern pattern = new Pattern("<a href=\"[^\"]+?\" class=\"new\" title=\"[^\"]+?\">(.+?)<\\/a>");
 		Replacer replacer = pattern.replacer("$1");
 		String result = replacer.replace(mInput);
 		mInput = result;
@@ -38,11 +38,11 @@ public class Regexer {
 	}
 
 	private static void removeFileLinks() {
-		Pattern pattern = new Pattern("<a href=\".+?\" class=\"image\">(.+?)<\\/a>");
+		Pattern pattern = new Pattern("<a href=\"[^\"]+?\" class=\"image\">(.+?)<\\/a>");
 		Replacer replacer = pattern.replacer("$1");
 		String result = replacer.replace(mInput);
 
-		Pattern pattern2 = new Pattern("(<img alt=\".+?\" src=\"(.+?)\".+?/>)");
+		Pattern pattern2 = new Pattern("(<img alt=\"[^\"]+?\" src=\"([^\"]+?)\".+?/>)");
 		Replacer replacer2 = pattern2.replacer("<a href=\"$2\">$1</a>");
 		String result2 = replacer2.replace(result);
 		mInput = result2;
