@@ -25,8 +25,6 @@ public class ArticleWebViewClient extends WebViewClient {
 			if (Uri.parse(url).getQueryParameter("action") != null && Uri.parse(url).getQueryParameter("action").equals("edit")) {
 				Toast.makeText(mContext, "Sorry, editing not supported", Toast.LENGTH_SHORT).show();
 			} else if (url.contains(".png") || url.contains(".jpg") || url.contains(".gif")) {
-				Log.i("Flerp", url);
-				Log.i("Derp", Uri.decode(url));
 				mListener.onImageSelected(Uri.decode(url).toString());
 			} else {
 				mListener.onLink((Uri.decode(url).toString()));

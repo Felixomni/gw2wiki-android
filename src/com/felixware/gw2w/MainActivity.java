@@ -56,8 +56,8 @@ import com.felixware.gw2w.http.WebServiceException;
 import com.felixware.gw2w.listeners.MainListener;
 import com.felixware.gw2w.utilities.ArticleWebViewClient;
 import com.felixware.gw2w.utilities.Constants;
-import com.felixware.gw2w.utilities.LinkStripper;
 import com.felixware.gw2w.utilities.PrefsManager;
+import com.felixware.gw2w.utilities.Regexer;
 
 public class MainActivity extends FragmentActivity implements OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener, GetImageUrlListener {
 	private static final String NAV_STATE = "nav_state";
@@ -227,7 +227,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 			WebService.getInstance(this).cancelAllRequests();
 			mWebSpinner.setVisibility(View.VISIBLE);
 			if (PrefsManager.getInstance(this).getWikiLanguage() == Constants.ENGLISH) {
-				WebService.getInstance(this).getContentEnglish(this, title);
+				WebService.getInstance(this).getTitleEnglish(this, title);
 			} else {
 				WebService.getInstance(this).getContent(this, title);
 			}
@@ -301,24 +301,20 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 	@Override
 	public void didGetContent(RequestTask request, String content, String title) {
-		if (content.contains("<ol><li>REDIRECT")) {
-			getContent(LinkStripper.resolveRedirect(content));
+		mWebContent.loadDataWithBaseURL(Constants.getBaseURL(this), Regexer.strip(content), "text/html", "UTF-8", title);
+		mPageTitle.setText(title);
+		// Log.i("checking titles", "current page title is " + currentPageTitle + " new title is " + title);
+		if (!isGoingBack && (currentPageTitle == null || !currentPageTitle.equals(title))) {
+			// Log.i("back history", "Adding " + title + " to the back history");
+			backHistory.add(title);
 		} else {
-			mWebContent.loadDataWithBaseURL(Constants.getBaseURL(this), LinkStripper.strip(content), "text/html", "UTF-8", title);
-			mPageTitle.setText(title);
-			// Log.i("checking titles", "current page title is " + currentPageTitle + " new title is " + title);
-			if (!isGoingBack && (currentPageTitle == null || !currentPageTitle.equals(title))) {
-				// Log.i("back history", "Adding " + title + " to the back history");
-				backHistory.add(title);
-			} else {
-				isGoingBack = false;
-			}
-			currentPageTitle = title;
-			mFavoriteBtn.setImageResource(R.drawable.nav_favorites_off);
-			isFavorite = false;
-			determineFavoriteStatus();
-			mWebSpinner.setVisibility(View.GONE);
+			isGoingBack = false;
 		}
+		currentPageTitle = title;
+		mFavoriteBtn.setImageResource(R.drawable.nav_favorites_off);
+		isFavorite = false;
+		determineFavoriteStatus();
+		mWebSpinner.setVisibility(View.GONE);
 	}
 
 	private void determineFavoriteStatus() {
@@ -589,10 +585,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 	@Override
 	public void onImageSelected(String url) {
-		Matcher matcher = Pattern.compile("(?<=wiki/).*").matcher(url);
-		matcher.find();
-		WebService.getInstance(this).getImageUrl(this, matcher.group());
-		mWebSpinner.setVisibility(View.VISIBLE);
+		Log.i("Image URL", Regexer.getImageUrl(url));
+		// Matcher matcher = Pattern.compile("(?<=wiki/).*").matcher(url);
+		// matcher.find();
+		// WebService.getInstance(this).getImageUrl(this, matcher.group());
+		// mWebSpinner.setVisibility(View.VISIBLE);
 	}
 
 	@Override

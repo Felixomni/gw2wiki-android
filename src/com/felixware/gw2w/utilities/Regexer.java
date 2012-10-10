@@ -3,9 +3,8 @@ package com.felixware.gw2w.utilities;
 import jregex.Matcher;
 import jregex.Pattern;
 import jregex.Replacer;
-import android.util.Log;
 
-public class LinkStripper {
+public class Regexer {
 	private static String mInput;
 
 	// Wooo! Take it off!
@@ -15,6 +14,8 @@ public class LinkStripper {
 		removeRedLinks();
 
 		removeEditSections();
+
+		removeFileLinks();
 
 		// Log.i("Regex", mInput);
 
@@ -36,7 +37,6 @@ public class LinkStripper {
 		mInput = result;
 	}
 
-	// Ended up not using this, but it might be useful eventually
 	private static void removeFileLinks() {
 		Pattern pattern = new Pattern("<a href=\".+?\" class=\"image\">(.+?)<\\/a>");
 		Replacer replacer = pattern.replacer("$1");
@@ -49,14 +49,15 @@ public class LinkStripper {
 
 	}
 
-	public static String resolveRedirect(String content) {
-		Pattern pattern = new Pattern("<ol><li>REDIRECT <a href=.+?\">(.+?)<\\/a>");
-		Matcher matcher = pattern.matcher(content);
+	public static String getImageUrl(String url) {
+		Pattern pattern = new Pattern("thumb/");
+		Matcher matcher = pattern.matcher(url);
 		if (matcher.find()) {
-			Log.i("EJIFE", matcher.group(1));
-			return matcher.group(1);
+			Pattern pattern2 = new Pattern("(.+?)thumb/(.+?)\\..+?\\.(.+?)");
+			Replacer replacer = pattern2.replacer("$1$2.$3");
+			return replacer.replace(url);
 		} else {
-			return content;
+			return url;
 		}
 	}
 

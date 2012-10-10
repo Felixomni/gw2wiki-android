@@ -107,7 +107,7 @@ public final class WebService {
 			}
 		});
 
-		NameValuePair[] params = { new BasicNameValuePair("action", "query"), new BasicNameValuePair("prop", "revisions"), new BasicNameValuePair("rvprop", "content"), new BasicNameValuePair("rvparse", "1"), new BasicNameValuePair("format", "json"), new BasicNameValuePair("titles", title) };
+		NameValuePair[] params = { new BasicNameValuePair("action", "query"), new BasicNameValuePair("prop", "revisions"), new BasicNameValuePair("rvprop", "content"), new BasicNameValuePair("rvparse", "1"), new BasicNameValuePair("format", "json"), new BasicNameValuePair("titles", title), new BasicNameValuePair("redirects", "1") };
 		return makeRequest(getContentRequest, params);
 	}
 
@@ -194,7 +194,7 @@ public final class WebService {
 			@Override
 			public void onRequestCompleted(RequestTask request, String response) {
 				Log.i(TAG, response);
-				WebService.getInstance(mContext).getTitleEnglish(listener, title, response);
+				listener.didGetContent(request, response, title);
 			}
 		});
 
@@ -202,7 +202,7 @@ public final class WebService {
 		return makeRequest(getContentEnglishRequest, params);
 	}
 
-	public RequestTask getTitleEnglish(final GetContentListener listener, String title, final String content) {
+	public RequestTask getTitleEnglish(final GetContentListener listener, String title) {
 		RequestTask getTitleEnglishRequest = new GetRequestTask(mContext, "/api.php");
 
 		getTitleEnglishRequest.setListener(new RequestListener() {
@@ -222,14 +222,14 @@ public final class WebService {
 					JSONObject page = new JSONObject(pages.getString(pageid.getString(0)));
 					String response_title = page.getString("title");
 					Log.i(TAG, response_title);
-					listener.didGetContent(request, content, response_title);
+					WebService.getInstance(mContext).getContentEnglish(listener, response_title);
 				} catch (JSONException e) {
 					requestFailed(request, listener, false, Constants.ERROR_PAGE_DOES_NOT_EXIST);
 				}
 			}
 		});
 
-		NameValuePair[] params = { new BasicNameValuePair("action", "query"), new BasicNameValuePair("prop", "info"), new BasicNameValuePair("format", "json"), new BasicNameValuePair("titles", title) };
+		NameValuePair[] params = { new BasicNameValuePair("action", "query"), new BasicNameValuePair("prop", "info"), new BasicNameValuePair("format", "json"), new BasicNameValuePair("titles", title), new BasicNameValuePair("redirects", "1") };
 		return makeRequest(getTitleEnglishRequest, params);
 	}
 
