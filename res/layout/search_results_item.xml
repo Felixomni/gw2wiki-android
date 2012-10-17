@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/selector_search_results_item_bg" 
-    android:padding="2dp"
-    android:textSize="14sp"
+    android:padding="8dp"
+    android:textSize="20sp"
+    android:singleLine="true"
+    android:ellipsize="end"
 />

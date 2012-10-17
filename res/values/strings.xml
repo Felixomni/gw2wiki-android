@@ -9,6 +9,7 @@
     <string name="no_search_results">No results found</string>
     <string name="loading">Loading&#8230;</string>
     <string name="dialog_close">Close</string>
+    <string name="menu_settings">Menu Settings</string>
 
 <!--     External Link Warning Dialog -->
     <string name="external_link_title">Warning: External link</string>

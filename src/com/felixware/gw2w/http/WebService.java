@@ -221,6 +221,11 @@ public final class WebService {
 					JSONArray pageid = pages.names();
 					JSONObject page = new JSONObject(pages.getString(pageid.getString(0)));
 					String response_title = page.getString("title");
+					try {
+						page.getString("missing");
+						requestFailed(request, listener, false, Constants.ERROR_PAGE_DOES_NOT_EXIST);
+					} catch (JSONException e) {
+					}
 					Log.i(TAG, response_title);
 					WebService.getInstance(mContext).getContentEnglish(listener, response_title);
 				} catch (JSONException e) {

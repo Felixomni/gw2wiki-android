@@ -12,7 +12,7 @@
     <application
         android:icon="@drawable/gw2wicon"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Light.NoTitleBar" >
+        android:theme="@style/Theme.Styled" >
         <activity
             android:name=".LoadingActivity"
             android:configChanges="orientation|screenSize"

@@ -8,11 +8,6 @@ public interface MainListener {
 
 	public void onExternalOkay(String url);
 
-	public void onNavItemSelected(String pageName);
-
 	public void onImageSelected(String url);
 
-	public void onSettingsSelected();
-
-	public void onFavoritesSelected();
 }

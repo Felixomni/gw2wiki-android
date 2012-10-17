@@ -5,143 +5,29 @@
     android:background="@drawable/bg_white" >
 
     <FrameLayout
+        android:id="@+id/dummy"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:focusable="true"
         android:focusableInTouchMode="true" />
 
     <RelativeLayout
-        android:id="@+id/topBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/bg_white" >
-
-        <ImageView
-            android:id="@+id/topBarBackground"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:scaleType="matrix"
-            android:src="@drawable/bg_top_bar" />
-
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:paddingTop="4dp"
-            android:src="@drawable/newlogo" />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/topBarBackground"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="4dp"
-            android:layout_marginRight="4dp" >
-
-            <ProgressBar
-                android:id="@+id/spinner"
-                style="@android:style/Widget.ProgressBar.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="4dp"
-                android:layout_toLeftOf="@+id/cancelSearchBtn"
-                android:indeterminate="true"
-                android:visibility="gone" />
-
-            <ImageView
-                android:id="@+id/cancelSearchBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/searchLayout"
-                android:src="@drawable/nav_cancel"
-                android:visibility="invisible" />
-
-            <RelativeLayout
-                android:id="@+id/searchLayout"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/shape_search_box" >
-
-                <EditText
-                    android:id="@+id/searchET"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/searchBtn"
-                    android:background="#00000000"
-                    android:hint="@string/hint_search"
-                    android:imeOptions="actionSearch|flagNoExtractUi"
-                    android:inputType="textCapSentences|textNoSuggestions"
-                    android:padding="4dp"
-                    android:singleLine="true"
-                    android:textSize="20sp" />
-
-                <ImageButton
-                    android:id="@+id/searchBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="#00000000"
-                    android:src="@drawable/ic_action_search" />
-            </RelativeLayout>
-        </RelativeLayout>
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/searchResultsLayout"
-        android:layout_width="200dp"
-        android:layout_height="160dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/topBar"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="-6dp"
-        android:background="@drawable/shape_search_box"
-        android:orientation="vertical"
-        android:padding="2dp"
-        android:visibility="gone" >
-
-        <ListView
-            android:id="@+id/searchResultsListView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_grey" />
-    </LinearLayout>
-
-    <RelativeLayout
         android:id="@+id/navBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/topBar"
+        android:layout_alignParentTop="true"
         android:background="@drawable/bg_nav_bar" >
-
-        <ImageView
-            android:id="@+id/navBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:padding="2dp"
-            android:src="@drawable/nav_menu_off" />
 
         <TextView
             android:id="@+id/pageTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/navBtn"
-            android:layout_toLeftOf="@+id/favoritesBtn"
-            android:layout_toRightOf="@+id/navBtn"
+            android:layout_alignBottom="@+id/favoritesBtn"
             android:ellipsize="end"
             android:gravity="center"
             android:padding="3dp"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
             android:singleLine="true"
             android:textColor="#FFFFFF"
             android:textSize="22sp" />
@@ -154,13 +40,6 @@
             android:padding="2dp"
             android:src="@drawable/nav_favorites_off" />
     </RelativeLayout>
-
-    <FrameLayout
-        android:id="@+id/navMenuContent"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/navBar"
-        android:layout_marginTop="-6dp" />
 
     <WebView
         android:id="@+id/webContent"
@@ -203,5 +82,14 @@
                 android:text="@string/loading" />
         </RelativeLayout>
     </RelativeLayout>
+    
+    <ListView
+        android:id="@+id/searchResultsListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/navBar"
+        android:layout_marginTop="-6dp"
+        android:visibility="gone"
+        />
 
 </RelativeLayout>

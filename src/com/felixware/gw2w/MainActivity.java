@@ -6,15 +6,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,10 +19,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.ViewGroup.MarginLayoutParams;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.Transformation;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
@@ -36,21 +29,25 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuItem.OnActionExpandListener;
+import com.felixware.gw2w.adapters.DropDownAdapter;
 import com.felixware.gw2w.dialogs.ErrorDialog;
 import com.felixware.gw2w.dialogs.NoFavoritesDialog;
 import com.felixware.gw2w.fragments.ImageDialogFragment;
-import com.felixware.gw2w.fragments.NavMenuFragment;
 import com.felixware.gw2w.http.RequestTask;
 import com.felixware.gw2w.http.WebService;
 import com.felixware.gw2w.http.WebService.GetContentListener;
-import com.felixware.gw2w.http.WebService.GetImageUrlListener;
 import com.felixware.gw2w.http.WebService.GetSearchResultsListener;
 import com.felixware.gw2w.http.WebServiceException;
 import com.felixware.gw2w.listeners.MainListener;
@@ -59,33 +56,85 @@ import com.felixware.gw2w.utilities.Constants;
 import com.felixware.gw2w.utilities.PrefsManager;
 import com.felixware.gw2w.utilities.Regexer;
 
-public class MainActivity extends FragmentActivity implements OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener, GetImageUrlListener {
-	private static final String NAV_STATE = "nav_state";
+public class MainActivity extends SherlockFragmentActivity implements OnNavigationListener, OnActionExpandListener, OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener {
 
 	private WebView mWebContent;
-	private FrameLayout mNavContent;
-	private LinearLayout mSearchResultsLayout;
 	private RelativeLayout mNavBar, mWebSpinner;
 	private EditText mSearchBox;
 	private TextView mPageTitle;
 	private ImageButton mSearchBtn;
-	private ImageView mNavBtn, mFavoriteBtn, mCancelSearchBtn;
+	private ImageView mFavoriteBtn;
 	private ProgressBar mSearchSpinner;
 	private ErrorDialog mErrDialog;
-	private Boolean isNavShown = false, isGoingBack = false, isViewDown = false, isNotSelectedResult = true, isFavorite = false;
-	private NavMenuFragment mNavFragment = new NavMenuFragment();
+	private Boolean isGoingBack = false, isNotSelectedResult = true, isFavorite = false;
 	private List<String> backHistory = new ArrayList<String>(), favorites = new ArrayList<String>();
 	private String currentPageTitle;
 	private int lastLanguage = -1;
 	private Handler mSearchHandle;
 	private ListView mSearchResultsListView;
+	private List<String> mList = new ArrayList<String>();
+	private DropDownAdapter mAdapter;
+	private ActionBar mActionBar;
+	private MenuItem mSearch;
+	private View mSearchView;
+	private FrameLayout dummyView;
+	private InputMethodManager imm;
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getSupportMenuInflater().inflate(R.menu.main_activity, menu);
+
+		mSearch = menu.findItem(R.id.search);
+
+		mSearchView = (View) mSearch.getActionView();
+
+		mSearch.setOnActionExpandListener(this);
+
+		mSearchBox = (EditText) mSearchView.findViewById(R.id.searchET);
+		mSearchBox.setOnEditorActionListener(this);
+		mSearchBox.addTextChangedListener(new SearchTextWatcher(mSearchBox));
+		mSearchBox.setOnFocusChangeListener(this);
+
+		mSearchBtn = (ImageButton) mSearchView.findViewById(R.id.searchBtn);
+		mSearchBtn.setOnClickListener(this);
+
+		mSearchSpinner = (ProgressBar) mSearchView.findViewById(R.id.spinner);
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.favorites:
+			favorites = Constants.getFavoritesListFromJSON(this);
+			if (favorites.isEmpty()) {
+				NoFavoritesDialog dialog = new NoFavoritesDialog(this);
+				dialog.show();
+			} else {
+				buildFavoritesDialog();
+			}
+			return true;
+		}
+		return false;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_activity);
 
+		mActionBar = getSupportActionBar();
+
+		String array[] = getResources().getStringArray(R.array.Settings_wiki_languages);
+		for (int i = 0; i < array.length; i++) {
+			mList.add(array[i]);
+		}
+
+		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
 		bindViews();
+
 		mSearchHandle = new Handler();
 
 		mWebContent = (WebView) findViewById(R.id.webContent);
@@ -95,15 +144,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 			if (mWebContent.restoreState(savedInstanceState) == null) {
 				Log.i("Something broke", "Dang");
 			}
-			if (savedInstanceState.getBoolean(NAV_STATE)) {
-				toggleNav();
-			}
 		} else {
 			getContent(Constants.getStartPage(this));
 		}
 	}
 
 	private void bindViews() {
+
+		dummyView = (FrameLayout) findViewById(R.id.dummy);
 
 		Typeface tf = Typeface.createFromAsset(this.getAssets(), "easonpro-bold-webfont.ttf");
 
@@ -115,50 +163,27 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 		mWebSpinner = (RelativeLayout) findViewById(R.id.webSpinnerLayout);
 
-		mNavContent = (FrameLayout) findViewById(R.id.navMenuContent);
-
-		mSearchResultsLayout = (LinearLayout) findViewById(R.id.searchResultsLayout);
-
-		mNavBtn = (ImageView) findViewById(R.id.navBtn);
-		mNavBtn.setOnClickListener(this);
-
 		mFavoriteBtn = (ImageView) findViewById(R.id.favoritesBtn);
 		mFavoriteBtn.setOnClickListener(this);
 
-		mSearchBox = (EditText) findViewById(R.id.searchET);
-		mSearchBox.setOnEditorActionListener(this);
-		mSearchBox.addTextChangedListener(new SearchTextWatcher(mSearchBox));
-		mSearchBox.setOnFocusChangeListener(this);
-
-		mSearchBtn = (ImageButton) findViewById(R.id.searchBtn);
-		mSearchBtn.setOnClickListener(this);
-
-		mCancelSearchBtn = (ImageView) findViewById(R.id.cancelSearchBtn);
-		mCancelSearchBtn.setOnClickListener(this);
-
-		mSearchSpinner = (ProgressBar) findViewById(R.id.spinner);
-
 		mPageTitle = (TextView) findViewById(R.id.pageTitle);
 		mPageTitle.setTypeface(tf);
+
+		mAdapter = new DropDownAdapter(this, mList);
+
+		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		mActionBar.setListNavigationCallbacks(mAdapter, this);
 	}
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_BACK:
-			if (isViewDown) {
-				hideKeyboard();
-				mSearchBox.setText("");
-				animateViewUp();
-				return true;
-			} else if (backHistory.size() > 1) {
+			if (backHistory.size() > 1) {
 				navigateBack();
 				return true;
 			}
 			break;
-		case KeyEvent.KEYCODE_MENU:
-			toggleNav();
-			return true;
 		}
 		return super.onKeyUp(keyCode, event);
 	}
@@ -171,7 +196,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 	protected void onSaveInstanceState(Bundle outState) {
 		mWebContent.saveState(outState);
-		outState.putBoolean(NAV_STATE, isNavShown);
 	}
 
 	@Override
@@ -180,13 +204,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		case R.id.searchBtn:
 			searchForTerm();
 			break;
-		case R.id.navBtn:
-			toggleNav();
-			break;
-		case R.id.cancelSearchBtn:
-			hideKeyboard();
-			mSearchBox.setText("");
-			break;
+
 		case R.id.favoritesBtn:
 			if (currentPageTitle != null) {
 				if (!isFavorite) {
@@ -206,22 +224,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 
 	}
 
-	private void toggleNav() {
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		if (isNavShown) {
-			isNavShown = false;
-			ft.remove(mNavFragment);
-			ft.commit();
-			mNavBtn.setImageResource(R.drawable.nav_menu_off);
-		} else {
-			isNavShown = true;
-			ft.add(R.id.navMenuContent, mNavFragment);
-			mNavContent.bringToFront();
-			ft.commit();
-			mNavBtn.setImageResource(R.drawable.nav_menu_on);
-		}
-	}
-
 	public void getContent(String title) {
 		if (title != null && !title.equals("")) {
 			WebService.getInstance(this).cancelAllRequests();
@@ -235,16 +237,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 	}
 
 	private void searchForTerm() {
-		mSearchSpinner.setVisibility(View.GONE);
-		hideKeyboard();
 		getContent(mSearchBox.getText().toString());
-		mSearchBox.setText("");
-	}
-
-	private void hideKeyboard() {
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(mSearchBox.getWindowToken(), 0);
-		mSearchBox.clearFocus();
+		mSearch.collapseActionView();
 	}
 
 	@Override
@@ -252,7 +246,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		Matcher matcher = Pattern.compile("(?<=wiki/).*").matcher(url);
 		matcher.find();
 		getContent(matcher.group());
-
 	}
 
 	@Override
@@ -285,14 +278,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 	}
 
 	@Override
-	public void onNavItemSelected(String pageName) {
-		toggleNav();
-		getContent(pageName);
-	}
-
-	@Override
 	public void onRequestError(RequestTask request, WebServiceException e) {
-		mSearchSpinner.setVisibility(View.GONE);
 		mWebSpinner.setVisibility(View.GONE);
 		mErrDialog = new ErrorDialog(this, e.getErrorCode());
 		mErrDialog.show();
@@ -335,9 +321,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		WebService.getInstance(this).cancelAllRequests();
 		mSearchSpinner.setVisibility(View.GONE);
 		mWebSpinner.setVisibility(View.GONE);
-		lastLanguage = PrefsManager.getInstance(this).getWikiLanguage();
-		hideKeyboard();
-		mSearchBox.setText("");
 	}
 
 	@Override
@@ -351,13 +334,6 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 			mPageTitle.setText("");
 			getContent(Constants.getStartPage(this));
 		}
-	}
-
-	@Override
-	public void onSettingsSelected() {
-		toggleNav();
-		Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-		startActivity(intent);
 	}
 
 	private class SearchTextWatcher implements TextWatcher {
@@ -405,109 +381,15 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 	@Override
 	public void didGetSearchResults(RequestTask request, List<String> list) {
 		mSearchSpinner.setVisibility(View.GONE);
-		animateViewDown();
+		mSearchResultsListView.setVisibility(View.VISIBLE);
 		mSearchResultsListView.setAdapter(new ArrayAdapter<String>(this, R.layout.search_results_item, list));
-
-	}
-
-	private void animateViewDown() {
-		if (mNavBar.getLayoutParams() instanceof MarginLayoutParams && !isViewDown) {
-			final MarginLayoutParams marginLayoutParams = (MarginLayoutParams) mNavBar.getLayoutParams();
-
-			final int startValueY = marginLayoutParams.topMargin;
-			final int endValueY = marginLayoutParams.topMargin + 250;
-
-			mNavBar.clearAnimation();
-
-			Animation animation = new Animation() {
-				@Override
-				protected void applyTransformation(float interpolatedTime, Transformation t) {
-					int topMarginInterpolatedValue = (int) (startValueY + (endValueY - startValueY) * interpolatedTime);
-					marginLayoutParams.topMargin = topMarginInterpolatedValue;
-
-					mNavBar.requestLayout();
-				}
-			};
-			animation.setDuration(500);
-			animation.setAnimationListener(new AnimationListener() {
-
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					mSearchResultsLayout.setVisibility(View.VISIBLE);
-
-				}
-
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void onAnimationStart(Animation animation) {
-					isViewDown = true;
-
-				}
-
-			});
-			mNavBar.startAnimation(animation);
-
-		}
-
-	}
-
-	private void animateViewUp() {
-		if (mNavBar.getLayoutParams() instanceof MarginLayoutParams && isViewDown) {
-			final MarginLayoutParams marginLayoutParams = (MarginLayoutParams) mNavBar.getLayoutParams();
-
-			final int startValueY = marginLayoutParams.topMargin;
-			final int endValueY = marginLayoutParams.topMargin - 250;
-
-			mNavBar.clearAnimation();
-
-			Animation animation = new Animation() {
-				@Override
-				protected void applyTransformation(float interpolatedTime, Transformation t) {
-					int topMarginInterpolatedValue = (int) (startValueY + (endValueY - startValueY) * interpolatedTime);
-					marginLayoutParams.topMargin = topMarginInterpolatedValue;
-
-					mNavBar.requestLayout();
-				}
-			};
-			animation.setDuration(500);
-			animation.setAnimationListener(new AnimationListener() {
-
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					mSearchResultsLayout.setVisibility(View.GONE);
-
-				}
-
-				@Override
-				public void onAnimationRepeat(Animation animation) {
-					// TODO Auto-generated method stub
-
-				}
-
-				@Override
-				public void onAnimationStart(Animation animation) {
-					isViewDown = false;
-
-				}
-
-			});
-			mNavBar.startAnimation(animation);
-
-		}
 
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {
-		isNotSelectedResult = false;
-		mSearchBox.setText(((TextView) v).getText().toString());
-		isNotSelectedResult = true;
-
+		mSearch.collapseActionView();
+		getContent(((TextView) v).getText().toString());
 	}
 
 	@Override
@@ -515,28 +397,15 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 		switch (v.getId()) {
 		case R.id.searchET:
 			if (hasFocus) {
-				mCancelSearchBtn.setVisibility(View.VISIBLE);
+				imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
 			} else {
-				mCancelSearchBtn.setVisibility(View.INVISIBLE);
-				animateViewUp();
+				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 			}
 			break;
 		default:
 			break;
 		}
 
-	}
-
-	@Override
-	public void onFavoritesSelected() {
-		toggleNav();
-		favorites = Constants.getFavoritesListFromJSON(this);
-		if (favorites.isEmpty()) {
-			NoFavoritesDialog dialog = new NoFavoritesDialog(this);
-			dialog.show();
-		} else {
-			buildFavoritesDialog();
-		}
 	}
 
 	private void buildFavoritesDialog() {
@@ -586,18 +455,35 @@ public class MainActivity extends FragmentActivity implements OnClickListener, M
 	@Override
 	public void onImageSelected(String url) {
 		Log.i("Image URL", Regexer.getImageUrl(url));
-		// Matcher matcher = Pattern.compile("(?<=wiki/).*").matcher(url);
-		// matcher.find();
-		// WebService.getInstance(this).getImageUrl(this, matcher.group());
-		// mWebSpinner.setVisibility(View.VISIBLE);
+		ImageDialogFragment newFragment = ImageDialogFragment.newInstance(url);
+		newFragment.show(getSupportFragmentManager(), "dialog");
 	}
 
 	@Override
-	public void didGetImageUrl(RequestTask request, String url) {
-		Log.i("infwi", url);
-		mWebSpinner.setVisibility(View.GONE);
-		ImageDialogFragment newFragment = ImageDialogFragment.newInstance(url);
-		newFragment.show(getSupportFragmentManager(), "dialog");
+	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+		if (PrefsManager.getInstance(this).getWikiLanguage() != itemPosition) {
+			PrefsManager.getInstance(this).setWikiLanguage(itemPosition);
+			backHistory.clear();
+			mWebContent.clearView();
+			currentPageTitle = null;
+			mPageTitle.setText("");
+			getContent(Constants.getStartPage(this));
+		}
+		return false;
+	}
+
+	@Override
+	public boolean onMenuItemActionExpand(MenuItem item) {
+		return true;
+	}
+
+	@Override
+	public boolean onMenuItemActionCollapse(MenuItem item) {
+		mSearchSpinner.setVisibility(View.INVISIBLE);
+		mSearchBox.setText("");
+		dummyView.requestFocus();
+		mSearchResultsListView.setVisibility(View.GONE);
+		return true;
 	}
 
 }
