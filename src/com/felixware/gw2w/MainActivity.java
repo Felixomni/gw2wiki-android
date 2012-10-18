@@ -69,7 +69,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	private Boolean isGoingBack = false, isNotSelectedResult = true, isFavorite = false;
 	private List<String> backHistory = new ArrayList<String>(), favorites = new ArrayList<String>();
 	private String currentPageTitle;
-	private int lastLanguage = -1;
 	private Handler mSearchHandle;
 	private ListView mSearchResultsListView;
 	private List<String> mList = new ArrayList<String>();
@@ -323,19 +322,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		mWebSpinner.setVisibility(View.GONE);
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		if (lastLanguage != PrefsManager.getInstance(this).getWikiLanguage()) {
-			backHistory.clear();
-			mWebContent.clearView();
-			mFavoriteBtn.setImageResource(R.drawable.nav_favorites_off);
-			currentPageTitle = null;
-			mPageTitle.setText("");
-			getContent(Constants.getStartPage(this));
-		}
-	}
-
 	private class SearchTextWatcher implements TextWatcher {
 
 		private Runnable mSearchRunnable;
@@ -465,6 +451,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 			PrefsManager.getInstance(this).setWikiLanguage(itemPosition);
 			backHistory.clear();
 			mWebContent.clearView();
+			mFavoriteBtn.setImageResource(R.drawable.nav_favorites_off);
 			currentPageTitle = null;
 			mPageTitle.setText("");
 			getContent(Constants.getStartPage(this));
