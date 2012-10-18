@@ -38,6 +38,11 @@ public class LoadingActivity extends Activity {
 	private void goForward() {
 		finish();
 		Intent intent = new Intent(LoadingActivity.this, MainActivity.class);
+
+		// pass on data uri if set
+		if (getIntent().getDataString() != null)
+			intent.setData(getIntent().getData());
+
 		startActivity(intent);
 	}
 

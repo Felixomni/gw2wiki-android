@@ -143,6 +143,32 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 			if (mWebContent.restoreState(savedInstanceState) == null) {
 				Log.i("Something broke", "Dang");
 			}
+		} else if (getIntent().getDataString() != null) {
+			// open URI directly
+			Uri uri = getIntent().getData();
+			String title = null;
+			if (uri.getPath().startsWith("/wiki/"))
+				title = uri.getPath().substring(6);
+			else
+				title = uri.getQueryParameter("title");
+
+			// fallback to start page
+			if (title == null)
+				getContent(Constants.getStartPage(this));
+
+			// change language to match URI
+			String languageTag = uri.getHost().substring(4, uri.getHost().indexOf('.'));
+			if (languageTag.equals("-de"))
+				PrefsManager.getInstance(this).setWikiLanguage(Constants.GERMAN);
+			else if (languageTag.equals("-fr"))
+				PrefsManager.getInstance(this).setWikiLanguage(Constants.FRENCH);
+			else if (languageTag.equals("-es"))
+				PrefsManager.getInstance(this).setWikiLanguage(Constants.SPANISH);
+			else
+				PrefsManager.getInstance(this).setWikiLanguage(Constants.ENGLISH);
+
+			// open article
+			getContent(title);
 		} else {
 			getContent(Constants.getStartPage(this));
 		}
