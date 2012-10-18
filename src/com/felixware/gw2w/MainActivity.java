@@ -146,6 +146,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		} else {
 			getContent(Constants.getStartPage(this));
 		}
+
+		mActionBar.setSelectedNavigationItem(PrefsManager.getInstance(this).getWikiLanguage());
 	}
 
 	private void bindViews() {
