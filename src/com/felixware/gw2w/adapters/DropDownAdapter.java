@@ -1,7 +1,5 @@
 package com.felixware.gw2w.adapters;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +11,14 @@ import com.felixware.gw2w.R;
 
 public class DropDownAdapter extends ArrayAdapter<String> {
 	private LayoutInflater inflater;
-	private List<String> items;
+	private String[] items;
+	private String[] codes;
 
-	public DropDownAdapter(Context context, List<String> items) {
+	public DropDownAdapter(Context context, String[] items, String[] codes) {
 		super(context, 0, items);
 		this.inflater = LayoutInflater.from(context);
 		this.items = items;
+		this.codes = codes;
 	}
 
 	private static class ViewHolder {
@@ -43,7 +43,7 @@ public class DropDownAdapter extends ArrayAdapter<String> {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		holder.language.setText(items.get(pos));
+		holder.language.setText(items[pos]);
 
 		return convertView;
 	}
@@ -67,10 +67,8 @@ public class DropDownAdapter extends ArrayAdapter<String> {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		holder.language.setText(items.get(pos));
-		// TODO use the actual language codes, not just first two characters
-
-		holder.languageCode.setText(items.get(pos).substring(0, 2).toLowerCase());
+		holder.language.setText(items[pos]);
+		holder.languageCode.setText(codes[pos]);
 
 		return convertView;
 	}

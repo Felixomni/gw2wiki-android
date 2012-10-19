@@ -125,11 +125,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 		mActionBar = getSupportActionBar();
 
-		String array[] = getResources().getStringArray(R.array.Settings_wiki_languages);
-		for (int i = 0; i < array.length; i++) {
-			mList.add(array[i]);
-		}
-
 		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
 		bindViews();
@@ -196,7 +191,9 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		mPageTitle = (TextView) findViewById(R.id.pageTitle);
 		mPageTitle.setTypeface(tf);
 
-		mAdapter = new DropDownAdapter(this, mList);
+		String[] languages = getResources().getStringArray(R.array.Settings_wiki_languages);
+		String[] langCodes = getResources().getStringArray(R.array.Settings_wiki_langcodes);
+		mAdapter = new DropDownAdapter(this, languages, langCodes);
 
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		mActionBar.setListNavigationCallbacks(mAdapter, this);
