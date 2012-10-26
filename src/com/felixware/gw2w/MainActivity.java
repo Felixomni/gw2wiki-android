@@ -175,8 +175,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 		dummyView = (FrameLayout) findViewById(R.id.dummy);
 
-		Typeface tf = Typeface.createFromAsset(this.getAssets(), "easonpro-bold-webfont.ttf");
-
 		mSearchResultsListView = (ListView) findViewById(R.id.searchResultsListView);
 		mSearchResultsListView.setOnItemClickListener(this);
 
@@ -189,7 +187,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		mFavoriteBtn.setOnClickListener(this);
 
 		mPageTitle = (TextView) findViewById(R.id.pageTitle);
-		mPageTitle.setTypeface(tf);
 
 		String[] languages = getResources().getStringArray(R.array.Settings_wiki_languages);
 		String[] langCodes = getResources().getStringArray(R.array.Settings_wiki_langcodes);

@@ -1,14 +1,14 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="AppTheme" parent="android:Theme.Light" />
-    
+
     <style name="NavMenuHeader">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
-        </style>
-        
+    </style>
+
     <style name="SettingsLabel">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -16,16 +16,17 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
     </style>
-    
-        <style name="AppTheme" parent="android:Theme.Light" />
-    
-        <style name="Theme.Styled" parent="Theme.Sherlock.Light">
+
+    <style name="AppTheme" parent="android:Theme.Light" />
+
+    <style name="Theme.Styled" parent="Theme.Sherlock.Light">
         <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
         <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
-        </style>
-        
-        <style name="Widget.Styled.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
+    </style>
+
+    <style name="Widget.Styled.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="displayOptions">showHome|useLogo</item>
+        <item name="android:displayOptions">showHome|useLogo</item>
         <item name="background">@null</item>
         <item name="android:background">@null</item>
         <item name="backgroundSplit">@null</item>
