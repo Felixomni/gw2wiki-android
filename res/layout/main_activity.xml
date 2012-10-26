@@ -30,7 +30,8 @@
             android:paddingRight="50dp"
             android:singleLine="true"
             android:textColor="#FFFFFF"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/favoritesBtn"

@@ -1,5 +1,6 @@
 package com.felixware.gw2w;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -113,6 +114,9 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 			} else {
 				buildFavoritesDialog();
 			}
+			return true;
+		case R.id.share:
+			shareArticle();
 			return true;
 		}
 		return false;
@@ -334,6 +338,22 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 			}
 		}
 
+	}
+	
+	private void shareArticle() {
+		Intent shareIntent = new Intent(Intent.ACTION_SEND);
+		String pageURL = getPageURL().replace(" ", "_");
+		//most options will be able to use key Intent.EXTRA_TEXT
+		shareIntent.putExtra(Intent.EXTRA_TEXT, pageURL);
+		//sms sharing requires the message to be in key sms_body
+		shareIntent.putExtra("sms_body", pageURL);
+		shareIntent.setType("text/plain");
+		Log.i("Sharing", pageURL);
+		startActivity(Intent.createChooser(shareIntent, "Share page using:"));		
+	}
+
+	private String getPageURL() {
+		return new String(Constants.getBaseURL(this) + File.separator + currentPageTitle);
 	}
 
 	@Override
