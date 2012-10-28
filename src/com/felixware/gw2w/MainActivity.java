@@ -448,6 +448,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	public void didGetSearchResults(RequestTask request, List<String> list) {
 		mSearchSpinner.setVisibility(View.INVISIBLE);
 		mSearchResultsListView.setVisibility(View.VISIBLE);
+		mPageTitle.setText(R.string.search_results);
 		mSearchResultsListView.setAdapter(new ArrayAdapter<String>(this, R.layout.search_results_item, list));
 
 	}
@@ -507,6 +508,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		mSearchBox.setText("");
 		dummyView.requestFocus();
 		mSearchResultsListView.setVisibility(View.GONE);
+		mPageTitle.setText(currentPageTitle);
 		return true;
 	}
 

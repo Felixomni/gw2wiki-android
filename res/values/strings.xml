@@ -11,6 +11,7 @@
     <string name="loading">Loading&#8230;</string>
     <string name="dialog_close">Close</string>
     <string name="menu_settings">Menu Settings</string>
+    <string name="search_results">Search Results</string>
 
 <!--     External Link Warning Dialog -->
     <string name="external_link_title">Warning: External link</string>
@@ -24,13 +25,6 @@
     <string name="error_no_page_text">Sorry, we don\'t have an article on that topic yet.</string>
     <string name="error_generic_title">Error: Whatever</string>
     <string name="error_generic_text">Some shit done fucked up.</string>
-
-<!-- 	 Nav Menu -->
-    <string name="nav_navigation_header">Navigation</string>
-    <string name="nav_support_header">Support</string>
-    <string name="nav_toolbox_header">Toolbox</string>
-    <string name="nav_app_settings">App settings&#8230;</string>
-    <string name="nav_favorites">Favorites&#8230;</string>
 
 <!-- 	  Settings -->
     <string name="settings_title">Settings</string>
