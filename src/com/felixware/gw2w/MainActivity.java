@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -79,6 +80,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	private View mSearchView;
 	private FrameLayout dummyView;
 	private InputMethodManager imm;
+	private String[] languages;
+	private String[] langCodes;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,6 +133,10 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		mActionBar = getSupportActionBar();
 
 		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		
+		languages = getResources().getStringArray(R.array.Settings_wiki_languages);
+		langCodes = getResources().getStringArray(R.array.Settings_wiki_langcodes);
+		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
 		bindViews();
 
@@ -192,11 +199,31 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 		mPageTitle = (TextView) findViewById(R.id.pageTitle);
 
-		String[] languages = getResources().getStringArray(R.array.Settings_wiki_languages);
-		String[] langCodes = getResources().getStringArray(R.array.Settings_wiki_langcodes);
-		mAdapter = new DropDownAdapter(this, languages, langCodes);
+		switch (getResources().getConfiguration().orientation) {
+		case Configuration.ORIENTATION_PORTRAIT:
+			mAdapter = new DropDownAdapter(this, languages, langCodes, DropDownAdapter.ORIENTATION_PORTRAIT);
+			break;
+		case Configuration.ORIENTATION_LANDSCAPE:
+			mAdapter = new DropDownAdapter(this, languages, langCodes, DropDownAdapter.ORIENTATION_LANDSCAPE);
+			break;
+		}
+		mActionBar.setListNavigationCallbacks(mAdapter, this);
+	}
+	
+	
 
-		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		
+		switch (newConfig.orientation) {
+		case Configuration.ORIENTATION_PORTRAIT:
+			mAdapter = new DropDownAdapter(this, languages, langCodes, DropDownAdapter.ORIENTATION_PORTRAIT);
+			break;
+		case Configuration.ORIENTATION_LANDSCAPE:
+			mAdapter = new DropDownAdapter(this, languages, langCodes, DropDownAdapter.ORIENTATION_LANDSCAPE);
+			break;
+		}
 		mActionBar.setListNavigationCallbacks(mAdapter, this);
 	}
 

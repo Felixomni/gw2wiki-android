@@ -5,6 +5,7 @@
     <string name="app_name">GW2 Wiki</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="gw2w_name">Guild Wars 2 Wiki</string>
     <string name="hint_search">Search</string>
     <string name="no_search_results">No results found</string>
     <string name="loading">Loading&#8230;</string>

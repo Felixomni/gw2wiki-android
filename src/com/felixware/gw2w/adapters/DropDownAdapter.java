@@ -10,15 +10,19 @@ import android.widget.TextView;
 import com.felixware.gw2w.R;
 
 public class DropDownAdapter extends ArrayAdapter<String> {
+	public static final int ORIENTATION_LANDSCAPE = 0;
+	public static final int ORIENTATION_PORTRAIT = 1;
 	private LayoutInflater inflater;
 	private String[] items;
 	private String[] codes;
+	private int orientation;
 
-	public DropDownAdapter(Context context, String[] items, String[] codes) {
+	public DropDownAdapter(Context context, String[] items, String[] codes, int orientation) {
 		super(context, 0, items);
 		this.inflater = LayoutInflater.from(context);
 		this.items = items;
 		this.codes = codes;
+		this.orientation = orientation;
 	}
 
 	private static class ViewHolder {
@@ -33,7 +37,11 @@ public class DropDownAdapter extends ArrayAdapter<String> {
 		if (convertView == null) {
 			holder = new ViewHolder();
 
-			convertView = inflater.inflate(R.layout.language_ab_item, null);
+			if (orientation == ORIENTATION_PORTRAIT) {
+			convertView = inflater.inflate(R.layout.language_ab_item_portrait, null);
+			} else {
+				convertView = inflater.inflate(R.layout.language_ab_item_landscape, null);
+			}
 
 			holder.language = (TextView) convertView.findViewById(R.id.language);
 
