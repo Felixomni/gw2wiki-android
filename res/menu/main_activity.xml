@@ -1,29 +1,20 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/menu_settings"
-        android:title="@string/menu_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
-        
-	<item
-	    android:id="@+id/search"
-        android:title="Search"
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/search"
+        android:actionLayout="@layout/search_layout"
         android:icon="@drawable/ic_action_search"
-        android:showAsAction="always|collapseActionView"
-        android:actionLayout="@layout/search_layout" />
-	
-	<item
-	    android:id="@+id/favorites"
-	    android:title="Favorites"
-	    android:icon="@drawable/ic_action_favorites"
-	    android:showAsAction="always"
-	    />
-	
-	<item 
-	    android:id="@+id/share"
-	    android:title="Share"
-	    android:icon="@drawable/ic_action_share"
-	    android:showAsAction="always"/>
-	
-	
-        
+        android:showAsAction="always|withText|collapseActionView"
+        android:title="@string/hint_search"/>
+    <item
+        android:id="@+id/favorites"
+        android:icon="@drawable/ic_action_favorites"
+        android:showAsAction="ifRoom"
+        android:title="Favorites"/>
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/ic_action_share"
+        android:showAsAction="ifRoom"
+        android:title="Share"/>
+
 </menu>

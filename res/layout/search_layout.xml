@@ -1,49 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content" >
+
     <RelativeLayout
-    android:id="@+id/searchLayout"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
-    android:background="@drawable/shape_search_box" >
-
-    <EditText
-        android:id="@+id/searchET"
-        android:layout_width="match_parent"
+        android:id="@+id/searchLayout"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/searchBtn"
-        android:background="#00000000"
-        android:hint="@string/hint_search"
-        android:imeOptions="actionSearch|flagNoExtractUi"
-        android:inputType="textCapSentences|textNoSuggestions"
-        android:padding="4dp"
-        android:singleLine="true"
-        android:textSize="20sp" />
+        android:layout_alignParentLeft="true" >
 
-    <ImageButton
-        android:id="@+id/searchBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:background="#00000000"
-        android:src="@drawable/ic_action_search" />
+        <ImageButton
+            android:id="@+id/searchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="#00000000"
+            android:src="@drawable/ic_action_search" />
 
-</RelativeLayout>
+        <EditText
+            android:id="@+id/searchET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/selector_search_bg"
+            android:hint="@string/hint_search"
+            android:imeOptions="actionSearch|flagNoExtractUi"
+            android:inputType="textCapSentences|textNoSuggestions"
+            android:paddingLeft="32dp"
+            android:singleLine="true"
+            android:textSize="20sp" />
+    </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/spinner"
+        style="@android:style/Widget.ProgressBar.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/searchLayout"
-        android:layout_marginLeft="2dp"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@+id/searchLayout"
         android:indeterminate="true"
-        style="@android:style/Widget.ProgressBar.Small"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
+
 </RelativeLayout>

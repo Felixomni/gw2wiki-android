@@ -6,14 +6,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -44,8 +42,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnActionExpandListener;
 import com.felixware.gw2w.adapters.DropDownAdapter;
-import com.felixware.gw2w.dialogs.ErrorDialog;
-import com.felixware.gw2w.dialogs.NoFavoritesDialog;
+import com.felixware.gw2w.fragments.FirstLoadFragment;
 import com.felixware.gw2w.fragments.ImageDialogFragment;
 import com.felixware.gw2w.http.RequestTask;
 import com.felixware.gw2w.http.WebService;
@@ -55,6 +52,7 @@ import com.felixware.gw2w.http.WebServiceException;
 import com.felixware.gw2w.listeners.MainListener;
 import com.felixware.gw2w.utilities.ArticleWebViewClient;
 import com.felixware.gw2w.utilities.Constants;
+import com.felixware.gw2w.utilities.Dialogs;
 import com.felixware.gw2w.utilities.PrefsManager;
 import com.felixware.gw2w.utilities.Regexer;
 
@@ -67,21 +65,20 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	private ImageButton mSearchBtn;
 	private ImageView mFavoriteBtn;
 	private ProgressBar mSearchSpinner;
-	private ErrorDialog mErrDialog;
-	private Boolean isGoingBack = false, isNotSelectedResult = true, isFavorite = false;
+	private Boolean isGoingBack = false, isNotSelectedResult = true, isFavorite = false, isFirstLoad = true;
 	private List<String> backHistory = new ArrayList<String>(), favorites = new ArrayList<String>();
 	private String currentPageTitle;
 	private Handler mSearchHandle;
 	private ListView mSearchResultsListView;
-	private List<String> mList = new ArrayList<String>();
 	private DropDownAdapter mAdapter;
 	private ActionBar mActionBar;
 	private MenuItem mSearch;
 	private View mSearchView;
-	private FrameLayout dummyView;
+	private FrameLayout dummyView, firstLoadLayout;
 	private InputMethodManager imm;
 	private String[] languages;
 	private String[] langCodes;
+	private Dialogs mDialogs;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -112,10 +109,9 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		case R.id.favorites:
 			favorites = Constants.getFavoritesListFromJSON(this);
 			if (favorites.isEmpty()) {
-				NoFavoritesDialog dialog = new NoFavoritesDialog(this);
-				dialog.show();
+				mDialogs.buildNoFavoritesDialog();
 			} else {
-				buildFavoritesDialog();
+				mDialogs.buildFavoritesDialog(favorites);
 			}
 			return true;
 		case R.id.share:
@@ -133,12 +129,22 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		mActionBar = getSupportActionBar();
 
 		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-		
+
 		languages = getResources().getStringArray(R.array.Settings_wiki_languages);
 		langCodes = getResources().getStringArray(R.array.Settings_wiki_langcodes);
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
+		mDialogs = new Dialogs(this);
+
 		bindViews();
+		if (isFirstLoad) {
+			isFirstLoad = false;
+
+			firstLoadLayout.bringToFront();
+			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+			ft.add(R.id.firstLoadLayout, new FirstLoadFragment());
+			ft.commit();
+		}
 
 		mSearchHandle = new Handler();
 
@@ -186,6 +192,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 		dummyView = (FrameLayout) findViewById(R.id.dummy);
 
+		firstLoadLayout = (FrameLayout) findViewById(R.id.firstLoadLayout);
+
 		mSearchResultsListView = (ListView) findViewById(R.id.searchResultsListView);
 		mSearchResultsListView.setOnItemClickListener(this);
 
@@ -209,13 +217,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		}
 		mActionBar.setListNavigationCallbacks(mAdapter, this);
 	}
-	
-	
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		
+
 		switch (newConfig.orientation) {
 		case Configuration.ORIENTATION_PORTRAIT:
 			mAdapter = new DropDownAdapter(this, languages, langCodes, DropDownAdapter.ORIENTATION_PORTRAIT);
@@ -303,7 +309,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	@Override
 	public void onExternalLink(String url) {
 		if (PrefsManager.getInstance(this).getExternalWarning()) {
-			buildExternalLinkDialog(url);
+			mDialogs.buildExternalLinkDialog(url);
 		} else {
 			externalLink(url);
 		}
@@ -332,13 +338,15 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	@Override
 	public void onRequestError(RequestTask request, WebServiceException e) {
 		mWebSpinner.setVisibility(View.GONE);
-		mErrDialog = new ErrorDialog(this, e.getErrorCode());
-		mErrDialog.show();
+		firstLoadLayout.removeAllViews();
+		firstLoadLayout.setVisibility(View.GONE);
+		mDialogs.buildErrorDialog(e.getErrorCode());
 
 	}
 
 	@Override
 	public void didGetContent(RequestTask request, String content, String title) {
+
 		mWebContent.loadDataWithBaseURL(Constants.getBaseURL(this), Regexer.strip(content), "text/html", "UTF-8", title);
 		mPageTitle.setText(title);
 		// Log.i("checking titles", "current page title is " + currentPageTitle + " new title is " + title);
@@ -353,6 +361,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		isFavorite = false;
 		determineFavoriteStatus();
 		mWebSpinner.setVisibility(View.GONE);
+		firstLoadLayout.removeAllViews();
+		firstLoadLayout.setVisibility(View.GONE);
 	}
 
 	private void determineFavoriteStatus() {
@@ -366,17 +376,17 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		}
 
 	}
-	
+
 	private void shareArticle() {
 		Intent shareIntent = new Intent(Intent.ACTION_SEND);
 		String pageURL = getPageURL().replace(" ", "_");
-		//most options will be able to use key Intent.EXTRA_TEXT
+		// most options will be able to use key Intent.EXTRA_TEXT
 		shareIntent.putExtra(Intent.EXTRA_TEXT, pageURL);
-		//sms sharing requires the message to be in key sms_body
+		// sms sharing requires the message to be in key sms_body
 		shareIntent.putExtra("sms_body", pageURL);
 		shareIntent.setType("text/plain");
 		Log.i("Sharing", pageURL);
-		startActivity(Intent.createChooser(shareIntent, "Share page using:"));		
+		startActivity(Intent.createChooser(shareIntent, "Share page using:"));
 	}
 
 	private String getPageURL() {
@@ -463,50 +473,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 	}
 
-	private void buildFavoritesDialog() {
-		final String favoritesArray[] = new String[favorites.size()];
-		favorites.toArray(favoritesArray);
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.favorites_dialog_title);
-		builder.setItems(favoritesArray, new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				MainActivity.this.getContent(favoritesArray[which]);
-			}
-
-		});
-		AlertDialog alert = builder.create();
-		alert.show();
-
-	}
-
-	private void buildExternalLinkDialog(final String url) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle(R.string.external_link_title);
-		builder.setMessage(String.format(getResources().getString(R.string.external_link_text), url));
-		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				externalLink(url);
-			}
-
-		});
-		builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// nothing
-			}
-
-		});
-
-		AlertDialog alert = builder.create();
-		alert.show();
-
-	}
-
 	@Override
 	public void onImageSelected(String url) {
 		Log.i("Image URL", Regexer.getImageUrl(url));
@@ -530,6 +496,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 	@Override
 	public boolean onMenuItemActionExpand(MenuItem item) {
+		mSearchBox.getSelectionStart();
 		return true;
 	}
 

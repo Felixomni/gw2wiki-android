@@ -213,6 +213,7 @@ public final class WebService {
 
 			@Override
 			public void onRequestCompleted(RequestTask request, String response) {
+				boolean isMissing = false;
 				Log.i(TAG, response);
 				try {
 					JSONObject responseJSON = new JSONObject(response);
@@ -223,11 +224,15 @@ public final class WebService {
 					String response_title = page.getString("title");
 					try {
 						page.getString("missing");
-						requestFailed(request, listener, false, Constants.ERROR_PAGE_DOES_NOT_EXIST);
+						isMissing = true;
 					} catch (JSONException e) {
 					}
 					Log.i(TAG, response_title);
-					WebService.getInstance(mContext).getContentEnglish(listener, response_title);
+					if (!isMissing) {
+						WebService.getInstance(mContext).getContentEnglish(listener, response_title);
+					} else {
+						throw new JSONException(null);
+					}
 				} catch (JSONException e) {
 					requestFailed(request, listener, false, Constants.ERROR_PAGE_DOES_NOT_EXIST);
 				}

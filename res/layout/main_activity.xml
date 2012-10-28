@@ -10,6 +10,12 @@
         android:layout_height="0dp"
         android:focusable="true"
         android:focusableInTouchMode="true" />
+    
+    <FrameLayout
+        android:id="@+id/firstLoadLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    	/>
 
     <RelativeLayout
         android:id="@+id/navBar"
@@ -29,6 +35,8 @@
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
             android:singleLine="true"
+            android:shadowColor="#88888888"
+            android:shadowRadius="2"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -83,14 +91,13 @@
                 android:text="@string/loading" />
         </RelativeLayout>
     </RelativeLayout>
-    
+
     <ListView
         android:id="@+id/searchResultsListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/navBar"
         android:layout_marginTop="-6dp"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
 </RelativeLayout>
