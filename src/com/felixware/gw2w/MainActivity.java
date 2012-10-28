@@ -337,6 +337,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 	@Override
 	public void onRequestError(RequestTask request, WebServiceException e) {
+		mSearchSpinner.setVisibility(View.INVISIBLE);
 		mWebSpinner.setVisibility(View.GONE);
 		firstLoadLayout.removeAllViews();
 		firstLoadLayout.setVisibility(View.GONE);
@@ -445,7 +446,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 	@Override
 	public void didGetSearchResults(RequestTask request, List<String> list) {
-		mSearchSpinner.setVisibility(View.GONE);
+		mSearchSpinner.setVisibility(View.INVISIBLE);
 		mSearchResultsListView.setVisibility(View.VISIBLE);
 		mSearchResultsListView.setAdapter(new ArrayAdapter<String>(this, R.layout.search_results_item, list));
 
