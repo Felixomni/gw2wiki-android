@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -153,7 +152,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 		if (savedInstanceState != null) {
 			if (mWebContent.restoreState(savedInstanceState) == null) {
-				Log.i("Something broke", "Dang");
+				// Log.i("Something broke", "Dang");
 			}
 		} else if (getIntent().getDataString() != null) {
 			// open URI directly
@@ -386,8 +385,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		// sms sharing requires the message to be in key sms_body
 		shareIntent.putExtra("sms_body", pageURL);
 		shareIntent.setType("text/plain");
-		Log.i("Sharing", pageURL);
-		startActivity(Intent.createChooser(shareIntent, "Share page using:"));
+		// Log.i("Sharing", pageURL);
+		startActivity(Intent.createChooser(shareIntent, getResources().getString(R.string.share_picker_title)));
 	}
 
 	private String getPageURL() {
@@ -477,7 +476,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 	@Override
 	public void onImageSelected(String url) {
-		Log.i("Image URL", Regexer.getImageUrl(url));
+		// Log.i("Image URL", Regexer.getImageUrl(url));
 		ImageDialogFragment newFragment = ImageDialogFragment.newInstance(url);
 		newFragment.show(getSupportFragmentManager(), "dialog");
 	}

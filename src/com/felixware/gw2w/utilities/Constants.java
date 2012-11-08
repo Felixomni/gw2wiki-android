@@ -26,6 +26,7 @@ public class Constants {
 	public static final String MAIN_PAGE_SPANISH = "P‡gina principal";
 	public static final String MAIN_PAGE_FRENCH = "Accueil";
 
+	// not currently used
 	public static String userAgentString = "GW2WApp/1.0 (https://github.com/Felixomni/gw2wiki-android; felixomni@gmail.com)";
 
 	public static final int ERROR_CONNECTION = 0;
