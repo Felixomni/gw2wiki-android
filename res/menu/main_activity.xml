@@ -10,11 +10,11 @@
         android:id="@+id/favorites"
         android:icon="@drawable/ic_action_favorites"
         android:showAsAction="ifRoom"
-        android:title="Favorites"/>
+        android:title="@string/favorites"/>
     <item
         android:id="@+id/share"
         android:icon="@drawable/ic_action_share"
         android:showAsAction="ifRoom"
-        android:title="Share"/>
+        android:title="@string/share"/>
 
 </menu>

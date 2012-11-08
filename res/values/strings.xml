@@ -24,6 +24,7 @@
     <string name="error_generic_text">Something\'s gone wrong. Please try again! </string>
 
     <!-- Share Picker -->
+    <string name="share">Share</string>
     <string name="share_picker_title">Share page using:</string>
 
     <!-- Image Dialog -->
@@ -36,6 +37,7 @@
     <string name="language_french">French</string>
 
     <!-- Favorites -->
+    <string name="favorites">Favorites</string>
     <string name="favorites_dialog_title">Your favorite pages</string>
     <string name="no_favorites_dialog_title">You have no favorites!</string>
     <string name="no_favorites_dialog_message">You haven\'t added any favorite articles yet. To mark an article as a favorite, tap the heart next to its title. </string>
