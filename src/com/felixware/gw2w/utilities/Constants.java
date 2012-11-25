@@ -23,7 +23,7 @@ public class Constants {
 
 	public static final String MAIN_PAGE_ENGLISH = "Main Page";
 	public static final String MAIN_PAGE_GERMAN = "Hauptseite";
-	public static final String MAIN_PAGE_SPANISH = "P‡gina principal";
+	public static final String MAIN_PAGE_SPANISH = "PÃ¡gina principal";
 	public static final String MAIN_PAGE_FRENCH = "Accueil";
 
 	// not currently used
