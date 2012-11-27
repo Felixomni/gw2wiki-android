@@ -1,3 +1,54 @@
 body {
-    font-family: arial;
-    }
+	font: 10pt/1.3em sans-serif;
+	margin: .5em;
+}
+
+a {
+	color: #002BB8;
+	text-decoration: none;
+}
+
+div.infobox {
+	float: none;
+	width: auto;
+	margin-left: 0;
+}
+
+/* lists */
+ul {
+	margin: .5em 0;
+	padding: 0;
+	list-style: none;
+}
+
+li ol, li ul {
+	margin: 0;
+}
+
+li {
+	padding-left: 2em;
+	text-indent: -1.5em;
+}
+
+li:before {
+	content: '■ ';
+	color: #999;
+	padding-right: .5em;
+}
+
+/* headings */
+h2 {
+	margin-top: 1.5em;
+	padding-bottom: 0.2em;
+	border-bottom: 1px solid #999;
+}
+
+h3 {
+	margin: 0;
+	padding: 0;
+}
+
+h4 {
+	margin: 0;
+	padding: 0;
+}

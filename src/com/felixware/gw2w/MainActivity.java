@@ -350,6 +350,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		StringBuilder html = new StringBuilder("<!DOCTYPE html><html><head>");
 		html.append("<title>GW2W</title>");
 
+		// load default site styles
+		html.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"");
+		html.append(Constants.getBaseURL(this) + "/index.php?title=MediaWiki:Common.css&action=raw");
+		html.append("\" />");
+
 		// load custom styles
 		html.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/style.css\" />");
 
