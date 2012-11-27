@@ -11,21 +11,6 @@ import android.content.Context;
 import com.felixware.gw2w.R;
 
 public class Constants {
-	public static final String BASE_URL_ENGLISH = "http://wiki.guildwars2.com";
-	public static final String BASE_URL_GERMAN = "http://wiki-de.guildwars2.com";
-	public static final String BASE_URL_SPANISH = "http://wiki-es.guildwars2.com";
-	public static final String BASE_URL_FRENCH = "http://wiki-fr.guildwars2.com";
-
-	public static final String DOMAIN_ENGLISH = "wiki.guildwars2.com";
-	public static final String DOMAIN_GERMAN = "wiki-de.guildwars2.com";
-	public static final String DOMAIN_SPANISH = "wiki-es.guildwars2.com";
-	public static final String DOMAIN_FRENCH = "wiki-fr.guildwars2.com";
-
-	public static final String MAIN_PAGE_ENGLISH = "Main Page";
-	public static final String MAIN_PAGE_GERMAN = "Hauptseite";
-	public static final String MAIN_PAGE_SPANISH = "Página principal";
-	public static final String MAIN_PAGE_FRENCH = "Accueil";
-
 	// not currently used
 	public static String userAgentString = "GW2WApp/1.0 (https://github.com/Felixomni/gw2wiki-android; felixomni@gmail.com)";
 
@@ -33,20 +18,19 @@ public class Constants {
 	public static final int ERROR_PAGE_DOES_NOT_EXIST = 1;
 	public static final int ERROR_SERVER = 2;
 
-	public static final int ENGLISH = 0;
-	public static final int GERMAN = 1;
-	public static final int SPANISH = 2;
-	public static final int FRENCH = 3;
-
 	public static String getLanguage(Context context, int language) {
+		return getLanguage(context, Language.fromId(language));
+	}
+
+	public static String getLanguage(Context context, Language language) {
 		switch (language) {
-		case Constants.ENGLISH:
+		case ENGLISH:
 			return context.getResources().getString(R.string.language_english);
-		case Constants.GERMAN:
+		case GERMAN:
 			return context.getResources().getString(R.string.language_german);
-		case Constants.SPANISH:
+		case SPANISH:
 			return context.getResources().getString(R.string.language_spanish);
-		case Constants.FRENCH:
+		case FRENCH:
 			return context.getResources().getString(R.string.language_french);
 		default:
 			return null;
@@ -54,51 +38,18 @@ public class Constants {
 	}
 
 	public static String getDomain(Context context) {
-		int language = PrefsManager.getInstance(context).getWikiLanguage();
-		switch (language) {
-		case Constants.ENGLISH:
-			return DOMAIN_ENGLISH;
-		case Constants.GERMAN:
-			return DOMAIN_GERMAN;
-		case Constants.SPANISH:
-			return DOMAIN_SPANISH;
-		case Constants.FRENCH:
-			return DOMAIN_FRENCH;
-		default:
-			return null;
-		}
+		Language language = PrefsManager.getInstance(context).getLanguage();
+		return language.getHost();
 	}
 
 	public static String getBaseURL(Context context) {
-		int language = PrefsManager.getInstance(context).getWikiLanguage();
-		switch (language) {
-		case Constants.ENGLISH:
-			return BASE_URL_ENGLISH;
-		case Constants.GERMAN:
-			return BASE_URL_GERMAN;
-		case Constants.SPANISH:
-			return BASE_URL_SPANISH;
-		case Constants.FRENCH:
-			return BASE_URL_FRENCH;
-		default:
-			return null;
-		}
+		Language language = PrefsManager.getInstance(context).getLanguage();
+		return language.getBaseUri();
 	}
 
 	public static String getStartPage(Context context) {
-		int language = PrefsManager.getInstance(context).getWikiLanguage();
-		switch (language) {
-		case Constants.ENGLISH:
-			return MAIN_PAGE_ENGLISH;
-		case Constants.GERMAN:
-			return MAIN_PAGE_GERMAN;
-		case Constants.SPANISH:
-			return MAIN_PAGE_SPANISH;
-		case Constants.FRENCH:
-			return MAIN_PAGE_FRENCH;
-		default:
-			return null;
-		}
+		Language language = PrefsManager.getInstance(context).getLanguage();
+		return language.getMainPage();
 	}
 
 	public static List<String> getFavoritesListFromJSON(Context context) {

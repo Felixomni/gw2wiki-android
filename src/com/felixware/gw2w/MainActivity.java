@@ -52,10 +52,13 @@ import com.felixware.gw2w.listeners.MainListener;
 import com.felixware.gw2w.utilities.ArticleWebViewClient;
 import com.felixware.gw2w.utilities.Constants;
 import com.felixware.gw2w.utilities.Dialogs;
+import com.felixware.gw2w.utilities.Language;
 import com.felixware.gw2w.utilities.PrefsManager;
 import com.felixware.gw2w.utilities.Regexer;
 
-public class MainActivity extends SherlockFragmentActivity implements OnNavigationListener, OnActionExpandListener, OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener {
+public class MainActivity extends SherlockFragmentActivity implements OnNavigationListener, OnActionExpandListener,
+		OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetSearchResultsListener,
+		OnItemClickListener, OnFocusChangeListener {
 
 	private WebView mWebContent;
 	private RelativeLayout mNavBar, mWebSpinner;
@@ -169,14 +172,14 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 			// change language to match URI
 			String languageTag = uri.getHost().substring(4, uri.getHost().indexOf('.'));
-			if (languageTag.equals("-de"))
-				PrefsManager.getInstance(this).setWikiLanguage(Constants.GERMAN);
-			else if (languageTag.equals("-fr"))
-				PrefsManager.getInstance(this).setWikiLanguage(Constants.FRENCH);
-			else if (languageTag.equals("-es"))
-				PrefsManager.getInstance(this).setWikiLanguage(Constants.SPANISH);
+			if (languageTag.equals(Language.GERMAN.getSubdomainSuffix()))
+				PrefsManager.getInstance(this).setLanguage(Language.GERMAN);
+			else if (languageTag.equals(Language.FRENCH.getSubdomainSuffix()))
+				PrefsManager.getInstance(this).setLanguage(Language.FRENCH);
+			else if (languageTag.equals(Language.SPANISH.getSubdomainSuffix()))
+				PrefsManager.getInstance(this).setLanguage(Language.SPANISH);
 			else
-				PrefsManager.getInstance(this).setWikiLanguage(Constants.ENGLISH);
+				PrefsManager.getInstance(this).setLanguage(Language.ENGLISH);
 
 			// open article
 			getContent(title);
@@ -285,7 +288,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		if (title != null && !title.equals("")) {
 			WebService.getInstance(this).cancelAllRequests();
 			mWebSpinner.setVisibility(View.VISIBLE);
-			if (PrefsManager.getInstance(this).getWikiLanguage() == Constants.ENGLISH) {
+			if (PrefsManager.getInstance(this).getLanguage() == Language.ENGLISH) {
 				WebService.getInstance(this).getTitleEnglish(this, title);
 			} else {
 				WebService.getInstance(this).getContent(this, title);

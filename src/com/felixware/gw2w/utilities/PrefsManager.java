@@ -45,7 +45,7 @@ public final class PrefsManager {
 	}
 
 	public int getWikiLanguage() {
-		return mSharedPreferences.getInt(WIKI_LANGUAGE, Constants.GERMAN);
+		return mSharedPreferences.getInt(WIKI_LANGUAGE, 0);
 	}
 
 	public void setWikiLanguage(int language) {
@@ -53,37 +53,43 @@ public final class PrefsManager {
 		mEditor.commit();
 	}
 
+	public Language getLanguage() {
+		return Language.fromId(mSharedPreferences.getInt(WIKI_LANGUAGE, 0));
+	}
+
+	public void setLanguage(Language language) {
+		mEditor.putInt(WIKI_LANGUAGE, language.getId());
+		mEditor.commit();
+	}
+
 	public String getFavorites() {
-		switch (getWikiLanguage()) {
-		case Constants.ENGLISH:
-			return mSharedPreferences.getString(FAVORITES_ENGLISH, null);
-		case Constants.GERMAN:
-			return mSharedPreferences.getString(FAVORITES_GERMAN, null);
-		case Constants.SPANISH:
-			return mSharedPreferences.getString(FAVORITES_SPANISH, null);
-		case Constants.FRENCH:
-			return mSharedPreferences.getString(FAVORITES_FRENCH, null);
-		default:
-			return null;
+		switch (getLanguage()) {
+			case ENGLISH:
+				return mSharedPreferences.getString(FAVORITES_ENGLISH, null);
+			case GERMAN:
+				return mSharedPreferences.getString(FAVORITES_GERMAN, null);
+			case SPANISH:
+				return mSharedPreferences.getString(FAVORITES_SPANISH, null);
+			case FRENCH:
+				return mSharedPreferences.getString(FAVORITES_FRENCH, null);
 		}
+		return null;
 	}
 
 	public void setFavorites(String favoritesJSON) {
-		switch (getWikiLanguage()) {
-		case Constants.ENGLISH:
-			mEditor.putString(FAVORITES_ENGLISH, favoritesJSON);
-			break;
-		case Constants.GERMAN:
-			mEditor.putString(FAVORITES_GERMAN, favoritesJSON);
-			break;
-		case Constants.SPANISH:
-			mEditor.putString(FAVORITES_SPANISH, favoritesJSON);
-			break;
-		case Constants.FRENCH:
-			mEditor.putString(FAVORITES_FRENCH, favoritesJSON);
-			break;
-		default:
-			break;
+		switch (getLanguage()) {
+			case ENGLISH:
+				mEditor.putString(FAVORITES_ENGLISH, favoritesJSON);
+				break;
+			case GERMAN:
+				mEditor.putString(FAVORITES_GERMAN, favoritesJSON);
+				break;
+			case SPANISH:
+				mEditor.putString(FAVORITES_SPANISH, favoritesJSON);
+				break;
+			case FRENCH:
+				mEditor.putString(FAVORITES_FRENCH, favoritesJSON);
+				break;
 		}
 		mEditor.commit();
 	}
