@@ -58,8 +58,6 @@ import com.felixware.gw2w.utilities.Regexer;
 
 public class MainActivity extends SherlockFragmentActivity implements OnNavigationListener, OnActionExpandListener, OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener {
 
-	private static final String LOAD_CSS = "<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/style.css\" />";
-
 	private WebView mWebContent;
 	private RelativeLayout mNavBar, mWebSpinner;
 	private EditText mSearchBox;
@@ -349,8 +347,17 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 	@Override
 	public void didGetContent(RequestTask request, String content, String title) {
+		StringBuilder html = new StringBuilder("<!DOCTYPE html><html><head>");
+		html.append("<title>GW2W</title>");
 
-		mWebContent.loadDataWithBaseURL(Constants.getBaseURL(this), new String(LOAD_CSS + Regexer.strip(content)), "text/html", "UTF-8", title);
+		// load custom styles
+		html.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/style.css\" />");
+
+		html.append("</head><body>");
+		html.append(Regexer.strip(content));
+		html.append("</body></html>");
+
+		mWebContent.loadDataWithBaseURL(Constants.getBaseURL(this), html.toString(), "text/html", "UTF-8", title);
 		mPageTitle.setText(title);
 		// Log.i("checking titles", "current page title is " + currentPageTitle + " new title is " + title);
 		if (!isGoingBack && (currentPageTitle == null || !currentPageTitle.equals(title))) {
