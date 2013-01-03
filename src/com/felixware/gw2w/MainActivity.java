@@ -46,6 +46,7 @@ import com.felixware.gw2w.fragments.ImageDialogFragment;
 import com.felixware.gw2w.http.RequestTask;
 import com.felixware.gw2w.http.WebService;
 import com.felixware.gw2w.http.WebService.GetContentListener;
+import com.felixware.gw2w.http.WebService.GetFileUrlListener;
 import com.felixware.gw2w.http.WebService.GetSearchResultsListener;
 import com.felixware.gw2w.http.WebServiceException;
 import com.felixware.gw2w.listeners.MainListener;
@@ -56,7 +57,7 @@ import com.felixware.gw2w.utilities.Language;
 import com.felixware.gw2w.utilities.PrefsManager;
 import com.felixware.gw2w.utilities.Regexer;
 
-public class MainActivity extends SherlockFragmentActivity implements OnNavigationListener, OnActionExpandListener, OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener {
+public class MainActivity extends SherlockFragmentActivity implements OnNavigationListener, OnActionExpandListener, OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetFileUrlListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener {
 
 	private WebView mWebContent;
 	private RelativeLayout mNavBar, mWebSpinner;
@@ -283,7 +284,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	}
 
 	public void getContent(String title) {
-		if (title != null && !title.equals("")) {
+		if (title == null || title.equals(""))
+			return;
+
+		if (title.startsWith("File:") || title.startsWith("Image:")) {
+			WebService.getInstance(this).getFileUrl(this, title);
+		} else {
 			WebService.getInstance(this).cancelAllRequests();
 			mWebSpinner.setVisibility(View.VISIBLE);
 			if (PrefsManager.getInstance(this).getLanguage() == Language.ENGLISH) {
@@ -378,6 +384,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		mWebSpinner.setVisibility(View.GONE);
 		firstLoadLayout.removeAllViews();
 		firstLoadLayout.setVisibility(View.GONE);
+	}
+
+	@Override
+	public void didGetFileUrl(RequestTask request, String url, String title) {
+		ImageDialogFragment.newInstance(url).show(getSupportFragmentManager(), "dialog");
 	}
 
 	private void determineFavoriteStatus() {

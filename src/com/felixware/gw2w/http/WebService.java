@@ -78,6 +78,48 @@ public final class WebService {
 		public void didGetContent(RequestTask request, String content, String title);
 	}
 
+	public interface GetFileUrlListener extends Listener {
+		public void didGetFileUrl(RequestTask request, String url, String title);
+	}
+
+	public RequestTask getFileUrl(final GetFileUrlListener listener, String title) {
+		RequestTask getFileUrlRequest = new GetRequestTask(mContext, "/api.php");
+
+		getFileUrlRequest.setListener(new RequestListener() {
+			@Override
+			public void onRequestFailed(RequestTask request) {
+				requestFailedNoConnection(request, listener);
+			}
+
+			@Override
+			public void onRequestCompleted(RequestTask request, String response) {
+				try {
+					JSONObject responseJSON = new JSONObject(response);
+					JSONObject query = new JSONObject(responseJSON.getString("query"));
+					JSONObject pages = new JSONObject(query.getString("pages"));
+					JSONArray pageid = pages.names();
+					JSONObject page = new JSONObject(pages.getString(pageid.getString(0)));
+					String title = page.getString("title");
+
+					JSONObject imageinfo = page.getJSONArray("imageinfo").getJSONObject(0);
+					String url = imageinfo.getString("url");
+
+					listener.didGetFileUrl(request, url, title);
+				} catch (JSONException e) {
+					requestFailed(request, listener, false, Constants.ERROR_PAGE_DOES_NOT_EXIST);
+				}
+			}
+		});
+
+		NameValuePair[] params = {
+				new BasicNameValuePair("action", "query"),
+				new BasicNameValuePair("prop", "imageinfo"),
+				new BasicNameValuePair("iiprop", "url"),
+				new BasicNameValuePair("format", "json"),
+				new BasicNameValuePair("titles", title) };
+		return makeRequest(getFileUrlRequest, params);
+	}
+
 	public RequestTask getContent(final GetContentListener listener, String title) {
 		RequestTask getContentRequest = new GetRequestTask(mContext, "/api.php");
 
