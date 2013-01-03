@@ -26,7 +26,7 @@ public final class GetRequestTask extends RequestTask {
 			getRequest = new HttpGet(mURL);
 		}
 
-		Log.i(getClass().getSimpleName(), getRequest.getRequestLine().getUri());
+		//Log.i(getClass().getSimpleName(), getRequest.getRequestLine().getUri());
 
 		Response response = new Response();
 
@@ -34,7 +34,7 @@ public final class GetRequestTask extends RequestTask {
 			String responseString = mHttpClient.execute(getRequest, new BasicResponseHandler());
 			response.responseSucceeded = true;
 			response.responseString = responseString;
-			Log.i(GetRequestTask.class.getSimpleName(), responseString);
+			//Log.i(GetRequestTask.class.getSimpleName(), responseString);
 		} catch (IOException e) {
 			e.printStackTrace();
 			response.responseSucceeded = false;
