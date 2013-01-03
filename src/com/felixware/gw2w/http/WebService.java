@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.felixware.gw2w.R;
 import com.felixware.gw2w.http.RequestTask.RequestListener;
@@ -76,48 +75,7 @@ public final class WebService {
 
 	public interface GetContentListener extends Listener {
 		public void didGetContent(RequestTask request, String content, String title);
-	}
-
-	public interface GetFileUrlListener extends Listener {
 		public void didGetFileUrl(RequestTask request, String url, String title);
-	}
-
-	public RequestTask getFileUrl(final GetFileUrlListener listener, String title) {
-		RequestTask getFileUrlRequest = new GetRequestTask(mContext, "/api.php");
-
-		getFileUrlRequest.setListener(new RequestListener() {
-			@Override
-			public void onRequestFailed(RequestTask request) {
-				requestFailedNoConnection(request, listener);
-			}
-
-			@Override
-			public void onRequestCompleted(RequestTask request, String response) {
-				try {
-					JSONObject responseJSON = new JSONObject(response);
-					JSONObject query = new JSONObject(responseJSON.getString("query"));
-					JSONObject pages = new JSONObject(query.getString("pages"));
-					JSONArray pageid = pages.names();
-					JSONObject page = new JSONObject(pages.getString(pageid.getString(0)));
-					String title = page.getString("title");
-
-					JSONObject imageinfo = page.getJSONArray("imageinfo").getJSONObject(0);
-					String url = imageinfo.getString("url");
-
-					listener.didGetFileUrl(request, url, title);
-				} catch (JSONException e) {
-					requestFailed(request, listener, false, Constants.ERROR_PAGE_DOES_NOT_EXIST);
-				}
-			}
-		});
-
-		NameValuePair[] params = {
-				new BasicNameValuePair("action", "query"),
-				new BasicNameValuePair("prop", "imageinfo"),
-				new BasicNameValuePair("iiprop", "url"),
-				new BasicNameValuePair("format", "json"),
-				new BasicNameValuePair("titles", title) };
-		return makeRequest(getFileUrlRequest, params);
 	}
 
 	public RequestTask getContent(final GetContentListener listener, String title) {
@@ -133,23 +91,36 @@ public final class WebService {
 			public void onRequestCompleted(RequestTask request, String response) {
 				try {
 					JSONObject responseJSON = new JSONObject(response);
-					JSONObject query = new JSONObject(responseJSON.getString("query"));
-					JSONObject pages = new JSONObject(query.getString("pages"));
-					JSONArray pageid = pages.names();
-					JSONObject page = new JSONObject(pages.getString(pageid.getString(0)));
+					JSONObject pages = responseJSON.getJSONObject("query").getJSONObject("pages");
+					JSONObject page = pages.getJSONObject(pages.names().getString(0));
 					String title = page.getString("title");
-					JSONArray revisions = page.getJSONArray("revisions");
-					JSONObject string = revisions.getJSONObject(0);
-					String newstring = string.getString("*");
 
-					listener.didGetContent(request, newstring, title);
+					if (page.has("missing")) {
+						throw new JSONException(null);
+					}
+
+					if (page.getInt("ns") == 6) {
+						JSONObject imageInfo = page.getJSONArray("imageinfo").getJSONObject(0);
+						listener.didGetFileUrl(request, imageInfo.getString("url"), title);
+					} else {
+						JSONObject revision = page.getJSONArray("revisions").getJSONObject(0);
+						listener.didGetContent(request, revision.getString("*"), title);
+					}
 				} catch (JSONException e) {
 					requestFailed(request, listener, false, Constants.ERROR_PAGE_DOES_NOT_EXIST);
 				}
 			}
 		});
 
-		NameValuePair[] params = { new BasicNameValuePair("action", "query"), new BasicNameValuePair("prop", "revisions"), new BasicNameValuePair("rvprop", "content"), new BasicNameValuePair("rvparse", "1"), new BasicNameValuePair("format", "json"), new BasicNameValuePair("titles", title), new BasicNameValuePair("redirects", "1") };
+		NameValuePair[] params = {
+				new BasicNameValuePair("format", "json"),
+				new BasicNameValuePair("action", "query"),
+				new BasicNameValuePair("prop", "revisions|imageinfo"),
+				new BasicNameValuePair("rvprop", "content"),
+				new BasicNameValuePair("rvparse", "1"),
+				new BasicNameValuePair("iiprop", "url"),
+				new BasicNameValuePair("titles", title),
+				new BasicNameValuePair("redirects", "1") };
 		return makeRequest(getContentRequest, params);
 	}
 
@@ -169,7 +140,6 @@ public final class WebService {
 
 			@Override
 			public void onRequestCompleted(RequestTask request, String response) {
-				Log.i(TAG, response);
 				try {
 					JSONArray responseJSON = new JSONArray(response);
 					JSONArray results = responseJSON.getJSONArray(1);
@@ -199,7 +169,6 @@ public final class WebService {
 
 			@Override
 			public void onRequestCompleted(RequestTask request, String response) {
-				Log.i(TAG, response);
 				listener.didGetContent(request, response, title);
 			}
 		});
@@ -219,25 +188,21 @@ public final class WebService {
 
 			@Override
 			public void onRequestCompleted(RequestTask request, String response) {
-				boolean isMissing = false;
-				Log.i(TAG, response);
 				try {
 					JSONObject responseJSON = new JSONObject(response);
-					JSONObject query = new JSONObject(responseJSON.getString("query"));
-					JSONObject pages = new JSONObject(query.getString("pages"));
-					JSONArray pageid = pages.names();
-					JSONObject page = new JSONObject(pages.getString(pageid.getString(0)));
-					String response_title = page.getString("title");
-					try {
-						page.getString("missing");
-						isMissing = true;
-					} catch (JSONException e) {
-					}
-					Log.i(TAG, response_title);
-					if (!isMissing) {
-						WebService.getInstance(mContext).getContentEnglish(listener, response_title);
-					} else {
+					JSONObject pages = responseJSON.getJSONObject("query").getJSONObject("pages");
+					JSONObject page = pages.getJSONObject(pages.names().getString(0));
+					String title = page.getString("title");
+
+					if (page.has("missing")) {
 						throw new JSONException(null);
+					}
+
+					if (page.getInt("ns") == 6) {
+						JSONObject imageInfo = page.getJSONArray("imageinfo").getJSONObject(0);
+						listener.didGetFileUrl(request, imageInfo.getString("url"), title);
+					} else {
+						WebService.getInstance(mContext).getContentEnglish(listener, title);
 					}
 				} catch (JSONException e) {
 					requestFailed(request, listener, false, Constants.ERROR_PAGE_DOES_NOT_EXIST);
@@ -245,7 +210,13 @@ public final class WebService {
 			}
 		});
 
-		NameValuePair[] params = { new BasicNameValuePair("action", "query"), new BasicNameValuePair("prop", "info"), new BasicNameValuePair("format", "json"), new BasicNameValuePair("titles", title), new BasicNameValuePair("redirects", "1") };
+		NameValuePair[] params = {
+				new BasicNameValuePair("format", "json"),
+				new BasicNameValuePair("action", "query"),
+				new BasicNameValuePair("prop", "imageinfo"),
+				new BasicNameValuePair("iiprop", "url"),
+				new BasicNameValuePair("titles", title),
+				new BasicNameValuePair("redirects", "1") };
 		return makeRequest(getTitleEnglishRequest, params);
 	}
 

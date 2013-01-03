@@ -46,7 +46,6 @@ import com.felixware.gw2w.fragments.ImageDialogFragment;
 import com.felixware.gw2w.http.RequestTask;
 import com.felixware.gw2w.http.WebService;
 import com.felixware.gw2w.http.WebService.GetContentListener;
-import com.felixware.gw2w.http.WebService.GetFileUrlListener;
 import com.felixware.gw2w.http.WebService.GetSearchResultsListener;
 import com.felixware.gw2w.http.WebServiceException;
 import com.felixware.gw2w.listeners.MainListener;
@@ -57,7 +56,7 @@ import com.felixware.gw2w.utilities.Language;
 import com.felixware.gw2w.utilities.PrefsManager;
 import com.felixware.gw2w.utilities.Regexer;
 
-public class MainActivity extends SherlockFragmentActivity implements OnNavigationListener, OnActionExpandListener, OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetFileUrlListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener {
+public class MainActivity extends SherlockFragmentActivity implements OnNavigationListener, OnActionExpandListener, OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener {
 
 	private WebView mWebContent;
 	private RelativeLayout mNavBar, mWebSpinner;
@@ -290,9 +289,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		WebService.getInstance(this).cancelAllRequests();
 		mWebSpinner.setVisibility(View.VISIBLE);
 
-		if (title.startsWith("File:") || title.startsWith("Image:")) {
-			WebService.getInstance(this).getFileUrl(this, title);
-		} else if (PrefsManager.getInstance(this).getLanguage() == Language.ENGLISH) {
+		if (PrefsManager.getInstance(this).getLanguage() == Language.ENGLISH) {
 			WebService.getInstance(this).getTitleEnglish(this, title);
 		} else {
 			WebService.getInstance(this).getContent(this, title);
