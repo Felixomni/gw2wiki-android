@@ -287,16 +287,15 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		if (title == null || title.equals(""))
 			return;
 
+		WebService.getInstance(this).cancelAllRequests();
+		mWebSpinner.setVisibility(View.VISIBLE);
+
 		if (title.startsWith("File:") || title.startsWith("Image:")) {
 			WebService.getInstance(this).getFileUrl(this, title);
+		} else if (PrefsManager.getInstance(this).getLanguage() == Language.ENGLISH) {
+			WebService.getInstance(this).getTitleEnglish(this, title);
 		} else {
-			WebService.getInstance(this).cancelAllRequests();
-			mWebSpinner.setVisibility(View.VISIBLE);
-			if (PrefsManager.getInstance(this).getLanguage() == Language.ENGLISH) {
-				WebService.getInstance(this).getTitleEnglish(this, title);
-			} else {
-				WebService.getInstance(this).getContent(this, title);
-			}
+			WebService.getInstance(this).getContent(this, title);
 		}
 	}
 
@@ -388,6 +387,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 	@Override
 	public void didGetFileUrl(RequestTask request, String url, String title) {
+		mWebSpinner.setVisibility(View.GONE);
 		ImageDialogFragment.newInstance(url).show(getSupportFragmentManager(), "dialog");
 	}
 
