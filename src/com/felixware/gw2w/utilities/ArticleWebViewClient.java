@@ -24,8 +24,6 @@ public class ArticleWebViewClient extends WebViewClient {
 		if (Uri.parse(url).getHost().equals(Constants.getDomain(mContext))) {
 			if (Uri.parse(url).getQueryParameter("action") != null && Uri.parse(url).getQueryParameter("action").equals("edit")) {
 				Toast.makeText(mContext, mContext.getResources().getString(R.string.no_editing), Toast.LENGTH_SHORT).show();
-			} else if (url.contains(".png") || url.contains(".jpg") || url.contains(".gif")) {
-				mListener.onImageSelected(Uri.decode(url).toString());
 			} else {
 				mListener.onLink((Uri.decode(url).toString()));
 			}

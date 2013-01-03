@@ -501,13 +501,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	}
 
 	@Override
-	public void onImageSelected(String url) {
-		// Log.i("Image URL", Regexer.getImageUrl(url));
-		ImageDialogFragment newFragment = ImageDialogFragment.newInstance(url);
-		newFragment.show(getSupportFragmentManager(), "dialog");
-	}
-
-	@Override
 	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
 		if (PrefsManager.getInstance(this).getWikiLanguage() != itemPosition) {
 			PrefsManager.getInstance(this).setWikiLanguage(itemPosition);
