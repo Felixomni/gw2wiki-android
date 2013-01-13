@@ -76,6 +76,7 @@ public final class WebService {
 	public interface GetContentListener extends Listener {
 		public void didGetContent(RequestTask request, String content, String title);
 		public void didGetFileUrl(RequestTask request, String url, String title);
+		public void didGetCategories(RequestTask request, List<String> categories, String title);
 	}
 
 	public RequestTask getContent(final GetContentListener listener, String title) {
@@ -103,6 +104,18 @@ public final class WebService {
 						JSONObject imageInfo = page.getJSONArray("imageinfo").getJSONObject(0);
 						listener.didGetFileUrl(request, imageInfo.getString("url"), title);
 					} else {
+						// categories
+						if (page.has("categories")) {
+							JSONArray categories = page.getJSONArray("categories");
+							ArrayList<String> cats = new ArrayList<String>(categories.length());
+
+							for (int i = 0; i < categories.length(); i++) {
+								cats.add(categories.getJSONObject(i).getString("title"));
+							}
+							listener.didGetCategories(request, cats, title);
+						}
+
+						// page content
 						JSONObject revision = page.getJSONArray("revisions").getJSONObject(0);
 						listener.didGetContent(request, revision.getString("*"), title);
 					}
@@ -115,7 +128,7 @@ public final class WebService {
 		NameValuePair[] params = {
 				new BasicNameValuePair("format", "json"),
 				new BasicNameValuePair("action", "query"),
-				new BasicNameValuePair("prop", "revisions|imageinfo"),
+				new BasicNameValuePair("prop", "revisions|categories|imageinfo"),
 				new BasicNameValuePair("rvprop", "content"),
 				new BasicNameValuePair("rvparse", "1"),
 				new BasicNameValuePair("iiprop", "url"),
@@ -202,6 +215,18 @@ public final class WebService {
 						JSONObject imageInfo = page.getJSONArray("imageinfo").getJSONObject(0);
 						listener.didGetFileUrl(request, imageInfo.getString("url"), title);
 					} else {
+						// categories
+						if (page.has("categories")) {
+							JSONArray categories = page.getJSONArray("categories");
+							ArrayList<String> cats = new ArrayList<String>(categories.length());
+
+							for (int i = 0; i < categories.length(); i++) {
+								cats.add(categories.getJSONObject(i).getString("title"));
+							}
+							listener.didGetCategories(request, cats, title);
+						}
+
+						// page content
 						WebService.getInstance(mContext).getContentEnglish(listener, title);
 					}
 				} catch (JSONException e) {
@@ -213,7 +238,7 @@ public final class WebService {
 		NameValuePair[] params = {
 				new BasicNameValuePair("format", "json"),
 				new BasicNameValuePair("action", "query"),
-				new BasicNameValuePair("prop", "imageinfo"),
+				new BasicNameValuePair("prop", "categories|imageinfo"),
 				new BasicNameValuePair("iiprop", "url"),
 				new BasicNameValuePair("titles", title),
 				new BasicNameValuePair("redirects", "1") };

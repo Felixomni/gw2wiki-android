@@ -68,6 +68,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	private Boolean isGoingBack = false, isNotSelectedResult = true, isFavorite = false, isFirstLoad = true;
 	private List<String> backHistory = new ArrayList<String>(), favorites = new ArrayList<String>();
 	private String currentPageTitle;
+	private List<String> currentPageCategories;
 	private Handler mSearchHandle;
 	private ListView mSearchResultsListView;
 	private DropDownAdapter mAdapter;
@@ -386,6 +387,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	public void didGetFileUrl(RequestTask request, String url, String title) {
 		mWebSpinner.setVisibility(View.GONE);
 		ImageDialogFragment.newInstance(url).show(getSupportFragmentManager(), "dialog");
+	}
+
+	@Override
+	public void didGetCategories(RequestTask request, List<String> categories, String title) {
+		currentPageCategories = categories;
 	}
 
 	private void determineFavoriteStatus() {
