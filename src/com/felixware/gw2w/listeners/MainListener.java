@@ -8,4 +8,6 @@ public interface MainListener {
 
 	public void onExternalOkay(String url);
 
+	public void onShowCategories();
+
 }

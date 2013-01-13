@@ -20,8 +20,9 @@ public class ArticleWebViewClient extends WebViewClient {
 
 	@Override
 	public boolean shouldOverrideUrlLoading(WebView view, String url) {
-		// Log.i("URL is", url);
-		if (Uri.parse(url).getHost().equals(Constants.getDomain(mContext))) {
+		if (url.equals("about:categories")) {
+			mListener.onShowCategories();
+		} else if (Uri.parse(url).getHost().equals(Constants.getDomain(mContext))) {
 			if (Uri.parse(url).getQueryParameter("action") != null && Uri.parse(url).getQueryParameter("action").equals("edit")) {
 				Toast.makeText(mContext, mContext.getResources().getString(R.string.no_editing), Toast.LENGTH_SHORT).show();
 			} else {

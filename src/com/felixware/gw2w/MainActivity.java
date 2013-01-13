@@ -331,6 +331,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	}
 
 	@Override
+	public void onShowCategories() {
+		// TODO: implement category list dialog
+		//currentPageCategories
+	}
+
+	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		if (actionId == EditorInfo.IME_ACTION_SEARCH) {
 			searchForTerm();
