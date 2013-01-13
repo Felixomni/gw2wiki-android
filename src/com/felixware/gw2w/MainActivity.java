@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -361,8 +362,17 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		// load custom styles
 		html.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/style.css\" />");
 
-		html.append("</head><body>");
+		html.append("</head><body><main>");
 		html.append(Regexer.strip(content));
+		html.append("</main>");
+
+		// category list
+		if (currentPageCategories != null && currentPageCategories.size() > 0) {
+			html.append("<a id=\"android-category-list\" href=\"about:categories\">");
+			html.append(TextUtils.htmlEncode(getString(R.string.categories, currentPageCategories.size())));
+			html.append("</a>");
+		}
+
 		html.append("</body></html>");
 
 		mWebContent.loadDataWithBaseURL(Constants.getBaseURL(this), html.toString(), "text/html", "UTF-8", title);
