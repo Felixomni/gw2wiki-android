@@ -420,8 +420,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	protected void onPause() {
 		super.onPause();
 		WebService.getInstance(this).cancelAllRequests();
-		mSearchSpinner.setVisibility(View.GONE);
-		mWebSpinner.setVisibility(View.GONE);
+		if (mSearchSpinner != null) {
+			mSearchSpinner.setVisibility(View.GONE);
+		}
+		if (mWebSpinner != null) {
+			mWebSpinner.setVisibility(View.GONE);
+		}
 	}
 
 	private class SearchTextWatcher implements TextWatcher {
