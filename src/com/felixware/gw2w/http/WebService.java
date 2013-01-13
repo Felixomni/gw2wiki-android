@@ -113,6 +113,8 @@ public final class WebService {
 								cats.add(categories.getJSONObject(i).getString("title"));
 							}
 							listener.didGetCategories(request, cats, title);
+						} else {
+							listener.didGetCategories(request, null, title);
 						}
 
 						// page content
@@ -224,6 +226,8 @@ public final class WebService {
 								cats.add(categories.getJSONObject(i).getString("title"));
 							}
 							listener.didGetCategories(request, cats, title);
+						} else {
+							listener.didGetCategories(request, null, title);
 						}
 
 						// page content
