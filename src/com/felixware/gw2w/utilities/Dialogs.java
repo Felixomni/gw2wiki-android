@@ -65,6 +65,24 @@ public class Dialogs {
 
 	}
 
+	public void buildCategoriesDialog(List<String> categories) {
+		final String categoriesArray[] = new String[categories.size()];
+		categories.toArray(categoriesArray);
+		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+		builder.setTitle(R.string.title_categories);
+		builder.setItems(categoriesArray, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				mActivity.getContent(categoriesArray[which]);
+			}
+
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+
+	}
+
 	public void buildNoFavoritesDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 		builder.setTitle(R.string.no_favorites_dialog_title);

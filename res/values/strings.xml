@@ -6,6 +6,7 @@
     <string name="loading">Loading&#8230;</string>
     <string name="no_editing">Editing not supported</string>
     <string name="categories">Listed in %1$d categories</string>
+    <string name="title_categories">Categories</string>
 
     <!-- Search -->
     <string name="hint_search">Search</string>
@@ -18,11 +19,11 @@
 
     <!-- Error Dialog -->
     <string name="error_connect_title">Error: No connection</string>
-    <string name="error_connect_text">Please ensure your device has an internet connection and try again. </string>
+    <string name="error_connect_text">Please ensure your device has an internet connection and try again.</string>
     <string name="error_no_page_title">Error: Article does not exist</string>
     <string name="error_no_page_text">Sorry, we don\'t have an article on that topic yet.</string>
     <string name="error_generic_title">Error: Unknown</string>
-    <string name="error_generic_text">Something\'s gone wrong. Please try again! </string>
+    <string name="error_generic_text">Something\'s gone wrong. Please try again!</string>
 
     <!-- Share Picker -->
     <string name="share">Share</string>
@@ -41,6 +42,6 @@
     <string name="favorites">Favorites</string>
     <string name="favorites_dialog_title">Your favorite pages</string>
     <string name="no_favorites_dialog_title">You have no favorites!</string>
-    <string name="no_favorites_dialog_message">You haven\'t added any favorite articles yet. To mark an article as a favorite, tap the heart next to its title. </string>
+    <string name="no_favorites_dialog_message">You haven\'t added any favorite articles yet. To mark an article as a favorite, tap the heart next to its title.</string>
 
 </resources>

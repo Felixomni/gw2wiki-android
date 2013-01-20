@@ -332,8 +332,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 	@Override
 	public void onShowCategories() {
-		// TODO: implement category list dialog
-		//currentPageCategories
+		mDialogs.buildCategoriesDialog(currentPageCategories);
 	}
 
 	@Override

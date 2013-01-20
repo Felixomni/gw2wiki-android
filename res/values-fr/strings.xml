@@ -1,0 +1,49 @@
+<resources>
+    
+    <!-- Translations by Claire H. & Devi S. -->
+
+    <!-- Miscellaneous -->
+    <string name="app_name">GW2 Wiki</string>
+    <string name="gw2w_name">Guild Wars 2 Wiki</string>
+    <string name="loading">Chargement&#8230;</string>
+    <string name="no_editing"> Il n\'est pas permis d\'editer</string>
+    <string name="categories">Listed in %1$d categories</string>
+    <string name="title_categories">Catégories</string>
+
+    <!-- Search -->
+    <string name="hint_search">Chercher</string>
+    <string name="no_search_results">Aucun resultats trouves</string>
+    <string name="search_results">Chercher des Resultats</string>
+
+    <!-- External Link Warning Dialog -->
+    <string name="external_link_title">Avertissement: Lien Externe</string>
+    <string name="external_link_text"> Le lien choisi, \n\n%1$s\n\nmene a un autre site et va s\'ouvrira dans votre browser.</string>
+
+    <!-- Error Dialog -->
+    <string name="error_connect_title">Erreur: pas de connexion</string>
+    <string name="error_connect_text">Svp vous assurez que votre appareil a une connexion Internet et essayez encore.</string>
+    <string name="error_no_page_title">Erreur: L\'article n\'existe pas</string>
+    <string name="error_no_page_text">Désolé, nous n\'avons pas d\'article sur ce sujet encore.</string>
+    <string name="error_generic_title">Erreur: Inconnu</string>
+    <string name="error_generic_text">Quelque chose ne vas pas! Essayez encore une fois, svp.</string>
+
+    <!-- Share Picker -->
+    <string name="share">Partager</string>
+    <string name="share_picker_title">Partager la page utilisée:</string>
+
+    <!-- Image Dialog -->
+    <string name="dialog_close">Fermer</string>
+
+    <!-- Languages -->
+    <string name="language_english">Anglais</string>
+    <string name="language_german">Allemand</string>
+    <string name="language_spanish">Espagnol</string>
+    <string name="language_french">Français</string>
+
+    <!-- Favorites -->
+    <string name="favorites">Favoris</string>
+    <string name="favorites_dialog_title">Vos pages favoris</string>
+    <string name="no_favorites_dialog_title">Vous n\'avez aucun favoris!</string>
+    <string name="no_favorites_dialog_message">Vous n\'avez pas encore ajoute un article favori. Pour marquer un article, taper sur le bouton coeur a cote de on titre.</string>
+
+</resources>
