@@ -1,42 +1,46 @@
 <resources>
+
     <!-- Miscellaneous -->
-    <string name="app_name">GW2 Wiki</string>
-    <string name="hello_world">Hallo Welt</string>
+    <string name="gw2w_name">Guild Wars 2 Wiki</string>
+    <string name="loading">Lade&#8230;</string>
+    <string name="no_editing">Editieren ist nicht unterstützt</string>
+    <string name="categories">In %1$d Kategorien enthalten</string>
+    <string name="title_categories">Kategorien</string>
+
+    <!-- Search -->
     <string name="hint_search">Suche</string>
     <string name="no_search_results">Keine Ergebnisse gefunden</string>
-    <string name="loading">Lade&#8230;</string>
+    <string name="search_results">Suchergebnisse</string>
 
     <!-- External Link Warning Dialog -->
     <string name="external_link_title">Warnung: Externer Link</string>
     <string name="external_link_text"> Der ausgewählte Link, \n\n%1$s,\n\nführt auf eine andere Webseite und wird im Browser geöffnet.</string>
-    <string name="external_link_dontshow">Zeige diese Warnung nicht erneut.</string>
 
     <!-- Error Dialog -->
     <string name="error_connect_title">Fehler: Keine Verbindung</string>
-    <string name="error_connect_text">Bitte stelle sicher, dass das Gerät eine Internetverbindung besitzt, und versuche es erneut.</string>
+    <string name="error_connect_text">Bitte stelle sicher, dass das Gerät eine Internetverbindung besitzt und versuche es erneut.</string>
     <string name="error_no_page_title">Fehler: Artikel existiert nicht</string>
     <string name="error_no_page_text">Entschuldige, aber wir haben noch keinen Artikel zu diesem Thema.</string>
-    <string name="error_generic_title">Fehler: Was auch immer</string>
-    <string name="error_generic_text">Felix hat da irgendwas falsch gemacht.</string>
+    <string name="error_generic_title">Fehler: Unbekannter Fehler</string>
+    <string name="error_generic_text">Etwas ist schiefgelaufen. Bitte versuche es erneut!</string>
 
-    <!-- Nav Menu -->
-    <string name="nav_navigation_header">Navigation</string>
-    <string name="nav_support_header">Support</string>
-    <string name="nav_toolbox_header">Werkzeuge</string>
-    <string name="nav_app_settings">App-Einstellungen</string>
+    <!-- Share Picker -->
+    <string name="share">Teilen</string>
+    <string name="share_picker_title">Teile die Seite mit:</string>
 
-    <!-- Settings -->
-    <string name="settings_title">Einstellungen</string>
-    <string name="settings_start_page_label">Deine Startseite</string>
-    <string name="settings_start_page_hint">Seitentitel&#8230;</string>
-    <string name="settings_wiki_language_label">Wiki-Sprache</string>
-    <string name="settings_wiki_language_current">Aktuelle Sprache: %1$s</string>
-    <string name="settings_wiki_language_btn">Sprache ändern&#8230;</string>
-    <string name="settings_wiki_language_dialog_title">Wähle eine Sprache</string>
+    <!-- Image Dialog -->
+    <string name="dialog_close">Schließen</string>
 
     <!-- Languages -->
     <string name="language_english">Englisch</string>
     <string name="language_german">Deutsch</string>
     <string name="language_spanish">Spanisch</string>
     <string name="language_french">Französisch</string>
+
+    <!-- Favorites -->
+    <string name="favorites">Lesezeichen</string>
+    <string name="favorites_dialog_title">Deine Lesezeichen</string>
+    <string name="no_favorites_dialog_title">Du hast keine Lesezeichen!</string>
+    <string name="no_favorites_dialog_message">Du hast bisher noch keine Lesezeichen hinzugefügt. Um einen Artikel zu speichern, tippe auf das Herz neben dem Titel.</string>
+
 </resources>
