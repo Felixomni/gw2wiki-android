@@ -361,7 +361,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 		// load default site styles
 		html.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"");
-		html.append(Constants.getBaseURL(this) + "/index.php?title=MediaWiki:Common.css&action=raw");
+		html.append(Constants.getBaseURL(this) + "/index.php?title=MediaWiki:Common.css&amp;action=raw&amp;ctype=text/css");
 		html.append("\" />");
 
 		// load custom styles
