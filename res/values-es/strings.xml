@@ -7,7 +7,7 @@
     <string name="gw2w_name">Guild Wars 2 Wiki</string>
     <string name="loading">Cargando&#8230;</string>
     <string name="no_editing">No se permite la edición</string>
-    <string name="categories">Listed in %1$d categories</string>
+    <string name="categories">Listado en %1$d categorías</string>
     <string name="title_categories">Categorías</string>
 
     <!-- Search -->
