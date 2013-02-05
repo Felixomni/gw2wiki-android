@@ -7,7 +7,7 @@
     <string name="gw2w_name">Guild Wars 2 Wiki</string>
     <string name="loading">Chargement&#8230;</string>
     <string name="no_editing"> Il n\'est pas permis d\'editer</string>
-    <string name="categories">Listed in %1$d categories</string>
+    <string name="categories">Listé dans %1$d catégories</string>
     <string name="title_categories">Catégories</string>
 
     <!-- Search -->
