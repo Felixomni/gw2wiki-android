@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Miscellaneous -->
-    <string name="gw2w_name">Guild Wars 2 Wiki</string>
+    <string name="gw2w_name">GW2Wiki</string>
     <string name="loading">Lade&#8230;</string>
     <string name="no_editing">Editieren ist nicht unterstützt</string>
     <string name="categories">In %1$d Kategorien enthalten</string>

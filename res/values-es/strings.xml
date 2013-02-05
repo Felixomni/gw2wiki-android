@@ -3,7 +3,7 @@
     <!-- Translations by James W. -->
 
     <!-- Miscellaneous -->
-    <string name="app_name">GW2 Wiki</string>
+    <string name="app_name">GW2Wiki</string>
     <string name="gw2w_name">Guild Wars 2 Wiki</string>
     <string name="loading">Cargando&#8230;</string>
     <string name="no_editing">No se permite la edición</string>

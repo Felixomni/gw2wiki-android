@@ -3,7 +3,7 @@
     <!-- Translations by Claire H. & Devi S. -->
 
     <!-- Miscellaneous -->
-    <string name="app_name">GW2 Wiki</string>
+    <string name="app_name">GW2Wiki</string>
     <string name="gw2w_name">Guild Wars 2 Wiki</string>
     <string name="loading">Chargement&#8230;</string>
     <string name="no_editing"> Il n\'est pas permis d\'editer</string>
