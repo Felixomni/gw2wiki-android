@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="Settings_wiki_languages">
+        <item>Inglés</item>
+        <item>Alemán</item>
+        <item>Español</item>
+        <item>Francés</item>
+    </string-array>
+    <string-array name="Settings_wiki_langcodes">
+        <item>en</item>
+        <item>de</item>
+        <item>es</item>
+        <item>fr</item>
+    </string-array>
+
+</resources>
