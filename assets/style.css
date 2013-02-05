@@ -54,6 +54,10 @@ li:before {
 	padding-right: .5em;
 }
 
+dd {
+	margin-left: 1em;
+}
+
 /* headings */
 h2 {
 	margin-top: 1.5em;
