@@ -66,7 +66,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	private ImageButton mSearchBtn;
 	private ImageView mFavoriteBtn;
 	private ProgressBar mSearchSpinner;
-	private Boolean isGoingBack = false, isNotSelectedResult = true, isFavorite = false, isFirstLoad = true;
+	private Boolean isGoingBack = false, isNotSelectedResult = true, isFavorite = false, isFirstLoad = true, isRotating = false;
 	private List<String> backHistory = new ArrayList<String>(), favorites = new ArrayList<String>();
 	private String currentPageTitle;
 	private List<String> currentPageCategories;
@@ -212,9 +212,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		switch (getResources().getConfiguration().orientation) {
 		case Configuration.ORIENTATION_PORTRAIT:
 			mAdapter = new DropDownAdapter(this, languages, langCodes, DropDownAdapter.ORIENTATION_PORTRAIT);
+			mActionBar.setSelectedNavigationItem(PrefsManager.getInstance(this).getWikiLanguage());
 			break;
 		case Configuration.ORIENTATION_LANDSCAPE:
 			mAdapter = new DropDownAdapter(this, languages, langCodes, DropDownAdapter.ORIENTATION_LANDSCAPE);
+			mActionBar.setSelectedNavigationItem(PrefsManager.getInstance(this).getWikiLanguage());
 			break;
 		}
 		mActionBar.setListNavigationCallbacks(mAdapter, this);
@@ -223,7 +225,9 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
+		isRotating = true;
 
+		mActionBar.setListNavigationCallbacks(mAdapter, null);
 		switch (newConfig.orientation) {
 		case Configuration.ORIENTATION_PORTRAIT:
 			mAdapter = new DropDownAdapter(this, languages, langCodes, DropDownAdapter.ORIENTATION_PORTRAIT);
@@ -233,6 +237,9 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 			break;
 		}
 		mActionBar.setListNavigationCallbacks(mAdapter, this);
+		mActionBar.setSelectedNavigationItem(PrefsManager.getInstance(this).getWikiLanguage());
+
+		isRotating = false;
 	}
 
 	@Override
@@ -346,7 +353,9 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 	@Override
 	public void onRequestError(RequestTask request, WebServiceException e) {
-		mSearchSpinner.setVisibility(View.INVISIBLE);
+		if (mSearchSpinner != null) {
+			mSearchSpinner.setVisibility(View.INVISIBLE);
+		}
 		mWebSpinner.setVisibility(View.GONE);
 		firstLoadLayout.removeAllViews();
 		firstLoadLayout.setVisibility(View.GONE);
@@ -524,7 +533,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 	@Override
 	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-		if (PrefsManager.getInstance(this).getWikiLanguage() != itemPosition) {
+		if (PrefsManager.getInstance(this).getWikiLanguage() != itemPosition && !isRotating) {
 			PrefsManager.getInstance(this).setWikiLanguage(itemPosition);
 			backHistory.clear();
 			mWebContent.clearView();

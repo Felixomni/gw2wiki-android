@@ -38,7 +38,7 @@ public class DropDownAdapter extends ArrayAdapter<String> {
 			holder = new ViewHolder();
 
 			if (orientation == ORIENTATION_PORTRAIT) {
-			convertView = inflater.inflate(R.layout.language_ab_item_portrait, null);
+				convertView = inflater.inflate(R.layout.language_ab_item_portrait, null);
 			} else {
 				convertView = inflater.inflate(R.layout.language_ab_item_landscape, null);
 			}
