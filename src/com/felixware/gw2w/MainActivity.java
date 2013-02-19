@@ -313,8 +313,9 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	@Override
 	public void onLink(String url) {
 		Matcher matcher = Pattern.compile("(?<=wiki/).*").matcher(url);
-		matcher.find();
-		getContent(matcher.group());
+		if (matcher.find()) {
+			getContent(matcher.group());
+		}
 	}
 
 	@Override
