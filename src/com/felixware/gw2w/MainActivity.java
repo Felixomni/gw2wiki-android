@@ -44,12 +44,11 @@ import com.actionbarsherlock.view.MenuItem.OnActionExpandListener;
 import com.felixware.gw2w.adapters.DropDownAdapter;
 import com.felixware.gw2w.fragments.FirstLoadFragment;
 import com.felixware.gw2w.fragments.ImageDialogFragment;
-import com.felixware.gw2w.http.RequestTask;
-import com.felixware.gw2w.http.WebService;
-import com.felixware.gw2w.http.WebService.GetContentListener;
-import com.felixware.gw2w.http.WebService.GetSearchResultsListener;
-import com.felixware.gw2w.http.WebServiceException;
+import com.felixware.gw2w.http.ArticleService;
+import com.felixware.gw2w.http.SearchService;
+import com.felixware.gw2w.http.WebService.WebServiceCallback;
 import com.felixware.gw2w.listeners.MainListener;
+import com.felixware.gw2w.models.Content;
 import com.felixware.gw2w.utilities.ArticleWebViewClient;
 import com.felixware.gw2w.utilities.Constants;
 import com.felixware.gw2w.utilities.Dialogs;
@@ -57,7 +56,8 @@ import com.felixware.gw2w.utilities.Language;
 import com.felixware.gw2w.utilities.PrefsManager;
 import com.felixware.gw2w.utilities.Regexer;
 
-public class MainActivity extends SherlockFragmentActivity implements OnNavigationListener, OnActionExpandListener, OnClickListener, MainListener, OnEditorActionListener, GetContentListener, GetSearchResultsListener, OnItemClickListener, OnFocusChangeListener {
+public class MainActivity extends SherlockFragmentActivity implements OnNavigationListener, OnActionExpandListener,
+		OnClickListener, MainListener, OnEditorActionListener, OnItemClickListener, OnFocusChangeListener {
 
 	private WebView mWebContent;
 	private RelativeLayout mNavBar, mWebSpinner;
@@ -66,7 +66,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	private ImageButton mSearchBtn;
 	private ImageView mFavoriteBtn;
 	private ProgressBar mSearchSpinner;
-	private Boolean isGoingBack = false, isNotSelectedResult = true, isFavorite = false, isFirstLoad = true, isRotating = false;
+	private Boolean isGoingBack = false, isNotSelectedResult = true, isFavorite = false, isFirstLoad = true,
+			isRotating = false;
 	private List<String> backHistory = new ArrayList<String>(), favorites = new ArrayList<String>();
 	private String currentPageTitle;
 	private List<String> currentPageCategories;
@@ -294,15 +295,9 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	public void getContent(String title) {
 		if (title == null || title.equals(""))
 			return;
-
-		WebService.getInstance(this).cancelAllRequests();
 		mWebSpinner.setVisibility(View.VISIBLE);
 
-		if (PrefsManager.getInstance(this).getLanguage() == Language.ENGLISH) {
-			WebService.getInstance(this).getTitleEnglish(this, title);
-		} else {
-			WebService.getInstance(this).getContent(this, title);
-		}
+		ArticleService.getInstance(this, contentCallback).startService(title);
 	}
 
 	private void searchForTerm() {
@@ -352,26 +347,39 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		return false;
 	}
 
-	@Override
-	public void onRequestError(RequestTask request, WebServiceException e) {
-		if (mSearchSpinner != null) {
-			mSearchSpinner.setVisibility(View.INVISIBLE);
+	private WebServiceCallback contentCallback = new WebServiceCallback() {
+
+		@Override
+		public void onSuccess(Object response) {
+			Content content = (Content) response;
+			if (content.getFileUrl() != null) {
+				didGetFileUrl(content.getFileUrl(), content.getTitle());
+			} else {
+				didGetContent(content.getContent(), content.getTitle());
+				didGetCategories(content.getCategories());
+			}
+
 		}
-		mWebSpinner.setVisibility(View.GONE);
-		firstLoadLayout.removeAllViews();
-		firstLoadLayout.setVisibility(View.GONE);
-		mDialogs.buildErrorDialog(e.getErrorCode());
 
-	}
+		@Override
+		public void onError(Object response) {
+			mWebSpinner.setVisibility(View.GONE);
+			firstLoadLayout.removeAllViews();
+			firstLoadLayout.setVisibility(View.GONE);
+			int errorCode = (Integer) response;
+			Dialogs.buildErrorDialog(MainActivity.this, errorCode);
 
-	@Override
-	public void didGetContent(RequestTask request, String content, String title) {
+		}
+	};
+
+	public void didGetContent(String content, String title) {
 		StringBuilder html = new StringBuilder("<!DOCTYPE html><html><head>");
 		html.append("<title>GW2W</title>");
 
 		// load default site styles
 		html.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"");
-		html.append(Constants.getBaseURL(this) + "/index.php?title=MediaWiki:Common.css&amp;action=raw&amp;ctype=text/css");
+		html.append(Constants.getBaseURL(this)
+				+ "/index.php?title=MediaWiki:Common.css&amp;action=raw&amp;ctype=text/css");
 		html.append("\" />");
 
 		// load custom styles
@@ -392,7 +400,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 		mWebContent.loadDataWithBaseURL(Constants.getBaseURL(this), html.toString(), "text/html", "UTF-8", title);
 		mPageTitle.setText(title);
-		// Log.i("checking titles", "current page title is " + currentPageTitle + " new title is " + title);
+		// Log.i("checking titles", "current page title is " + currentPageTitle + " new title is " +
+		// title);
 		if (!isGoingBack && (currentPageTitle == null || !currentPageTitle.equals(title))) {
 			// Log.i("back history", "Adding " + title + " to the back history");
 			backHistory.add(title);
@@ -408,14 +417,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		firstLoadLayout.setVisibility(View.GONE);
 	}
 
-	@Override
-	public void didGetFileUrl(RequestTask request, String url, String title) {
+	public void didGetFileUrl(String url, String title) {
 		mWebSpinner.setVisibility(View.GONE);
 		ImageDialogFragment.newInstance(url).show(getSupportFragmentManager(), "dialog");
 	}
 
-	@Override
-	public void didGetCategories(RequestTask request, List<String> categories, String title) {
+	public void didGetCategories(List<String> categories) {
 		currentPageCategories = categories;
 	}
 
@@ -450,7 +457,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	@Override
 	protected void onPause() {
 		super.onPause();
-		WebService.getInstance(this).cancelAllRequests();
 		if (mSearchSpinner != null) {
 			mSearchSpinner.setVisibility(View.GONE);
 		}
@@ -469,7 +475,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 					String searchText = e.getText().toString().trim();
 					if (searchText != null && searchText.length() > 1) {
 						mSearchSpinner.setVisibility(View.VISIBLE);
-						WebService.getInstance(MainActivity.this).getSearchResults(MainActivity.this, searchText, 10);
+						SearchService.getInstance(MainActivity.this, searchCallback).startService(searchText);
 					} else {
 
 					}
@@ -501,14 +507,23 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		}
 	}
 
-	@Override
-	public void didGetSearchResults(RequestTask request, List<String> list) {
-		mSearchSpinner.setVisibility(View.INVISIBLE);
-		mSearchResultsListView.setVisibility(View.VISIBLE);
-		mPageTitle.setText(R.string.search_results);
-		mSearchResultsListView.setAdapter(new ArrayAdapter<String>(this, R.layout.search_results_item, list));
+	private WebServiceCallback searchCallback = new WebServiceCallback() {
 
-	}
+		@Override
+		public void onSuccess(Object response) {
+			mSearchSpinner.setVisibility(View.INVISIBLE);
+			mSearchResultsListView.setVisibility(View.VISIBLE);
+			mPageTitle.setText(R.string.search_results);
+			mSearchResultsListView.setAdapter(new ArrayAdapter<String>(MainActivity.this, R.layout.search_results_item,
+					(List<String>) response));
+		}
+
+		@Override
+		public void onError(Object response) {
+			mSearchSpinner.setVisibility(View.INVISIBLE);
+		}
+
+	};
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int pos, long id) {

@@ -18,8 +18,8 @@ public class Dialogs {
 		mActivity = (MainActivity) context;
 	}
 
-	public void buildErrorDialog(int errorCode) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+	public static void buildErrorDialog(Context context, int errorCode) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		switch (errorCode) {
 		case Constants.ERROR_CONNECTION:
 			builder.setTitle(R.string.error_connect_title);

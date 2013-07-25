@@ -19,7 +19,7 @@ public enum Language {
 	/**
 	 * Spanish wiki.
 	 */
-	SPANISH(2, "ES", "-es", "PÃ¡gina principal"),
+	SPANISH(2, "ES", "-es", "P‡gina principal"),
 
 	/**
 	 * French wiki.
@@ -39,24 +39,25 @@ public enum Language {
 	/**
 	 * Get the language from the internal id.
 	 * 
-	 * @param id language id
+	 * @param id
+	 *            language id
 	 * @return language with the given id
 	 */
 	public static Language fromId(int id) {
 		switch (id) {
-			case 0:
-				return ENGLISH;
-			case 1:
-				return GERMAN;
-			case 2:
-				return SPANISH;
-			case 3:
-				return FRENCH;
+		case 0:
+			return ENGLISH;
+		case 1:
+			return GERMAN;
+		case 2:
+			return SPANISH;
+		case 3:
+			return FRENCH;
 		}
 		return null;
 	}
 
-	private Language (int id, String languageCode, String subdomainSuffix, String mainPage) {
+	private Language(int id, String languageCode, String subdomainSuffix, String mainPage) {
 		this.id = id;
 		this.languageCode = languageCode;
 		this.subdomainSuffix = subdomainSuffix;
@@ -74,7 +75,8 @@ public enum Language {
 	/**
 	 * Get the full link to the page with the given title.
 	 * 
-	 * @param title page title
+	 * @param title
+	 *            page title
 	 * @return full URI of the page
 	 */
 	public String getPageLink(String title) {

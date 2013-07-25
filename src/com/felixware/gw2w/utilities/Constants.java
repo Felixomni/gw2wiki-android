@@ -17,6 +17,9 @@ public class Constants {
 	public static final int ERROR_CONNECTION = 0;
 	public static final int ERROR_PAGE_DOES_NOT_EXIST = 1;
 	public static final int ERROR_SERVER = 2;
+	public static final int ERROR_UNKNOWN = 3;
+
+	public static final String ENDPOINT = "/api.php";
 
 	public static String getLanguage(Context context, int language) {
 		return getLanguage(context, Language.fromId(language));
