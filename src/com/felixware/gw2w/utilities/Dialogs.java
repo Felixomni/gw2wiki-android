@@ -2,20 +2,17 @@ package com.felixware.gw2w.utilities;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import com.felixware.gw2w.MainActivity;
 import com.felixware.gw2w.R;
 
 public class Dialogs {
-	private Context mContext;
-	private MainActivity mActivity;
 
-	public Dialogs(Context context) {
-		mContext = context;
-		mActivity = (MainActivity) context;
+	public interface DialogListener {
+		public void onClick(String result);
 	}
 
 	public static void buildErrorDialog(Context context, int errorCode) {
@@ -47,16 +44,16 @@ public class Dialogs {
 		alert.show();
 	}
 
-	public void buildFavoritesDialog(List<String> favorites) {
+	public static void buildFavoritesDialog(Context context, List<String> favorites, final DialogListener listener) {
 		final String favoritesArray[] = new String[favorites.size()];
 		favorites.toArray(favoritesArray);
-		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(R.string.favorites_dialog_title);
 		builder.setItems(favoritesArray, new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				mActivity.getContent(favoritesArray[which]);
+				listener.onClick(favoritesArray[which]);
 			}
 
 		});
@@ -65,16 +62,16 @@ public class Dialogs {
 
 	}
 
-	public void buildCategoriesDialog(List<String> categories) {
+	public static void buildCategoriesDialog(Context context, List<String> categories, final DialogListener listener) {
 		final String categoriesArray[] = new String[categories.size()];
 		categories.toArray(categoriesArray);
-		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(R.string.title_categories);
 		builder.setItems(categoriesArray, new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				mActivity.getContent(categoriesArray[which]);
+				listener.onClick(categoriesArray[which]);
 			}
 
 		});
@@ -83,10 +80,10 @@ public class Dialogs {
 
 	}
 
-	public void buildNoFavoritesDialog() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+	public static void buildNoFavoritesDialog(Context context) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(R.string.no_favorites_dialog_title);
-		builder.setView(mActivity.getLayoutInflater().inflate(R.layout.no_favorites_dialog_view, null));
+		builder.setView(((Activity) context).getLayoutInflater().inflate(R.layout.no_favorites_dialog_view, null));
 		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
 			@Override
@@ -99,15 +96,15 @@ public class Dialogs {
 		alert.show();
 	}
 
-	public void buildExternalLinkDialog(final String url) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+	public static void buildExternalLinkDialog(Context context, final String url, final DialogListener listener) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(R.string.external_link_title);
-		builder.setMessage(String.format(mActivity.getResources().getString(R.string.external_link_text), url));
+		builder.setMessage(String.format(context.getResources().getString(R.string.external_link_text), url));
 		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				mActivity.externalLink(url);
+				listener.onClick(url);
 			}
 
 		});

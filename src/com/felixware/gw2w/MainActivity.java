@@ -52,6 +52,7 @@ import com.felixware.gw2w.models.Content;
 import com.felixware.gw2w.utilities.ArticleWebViewClient;
 import com.felixware.gw2w.utilities.Constants;
 import com.felixware.gw2w.utilities.Dialogs;
+import com.felixware.gw2w.utilities.Dialogs.DialogListener;
 import com.felixware.gw2w.utilities.Language;
 import com.felixware.gw2w.utilities.PrefsManager;
 import com.felixware.gw2w.utilities.Regexer;
@@ -81,7 +82,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	private InputMethodManager imm;
 	private String[] languages;
 	private String[] langCodes;
-	private Dialogs mDialogs;
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -112,9 +112,14 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		case R.id.favorites:
 			favorites = Constants.getFavoritesListFromJSON(this);
 			if (favorites.isEmpty()) {
-				mDialogs.buildNoFavoritesDialog();
+				Dialogs.buildNoFavoritesDialog(this);
 			} else {
-				mDialogs.buildFavoritesDialog(favorites);
+				Dialogs.buildFavoritesDialog(this, favorites, new DialogListener() {
+					@Override
+					public void onClick(String result) {
+						getContent(result);
+					}
+				});
 			}
 			return true;
 		case R.id.share:
@@ -136,8 +141,6 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		languages = getResources().getStringArray(R.array.Settings_wiki_languages);
 		langCodes = getResources().getStringArray(R.array.Settings_wiki_langcodes);
 		mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-
-		mDialogs = new Dialogs(this);
 
 		bindViews();
 		if (isFirstLoad) {
@@ -316,7 +319,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	@Override
 	public void onExternalLink(String url) {
 		if (PrefsManager.getInstance(this).getExternalWarning()) {
-			mDialogs.buildExternalLinkDialog(url);
+			Dialogs.buildExternalLinkDialog(this, url, new DialogListener() {
+				@Override
+				public void onClick(String result) {
+					externalLink(result);
+				}
+			});
 		} else {
 			externalLink(url);
 		}
@@ -335,7 +343,12 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 	@Override
 	public void onShowCategories() {
-		mDialogs.buildCategoriesDialog(currentPageCategories);
+		Dialogs.buildCategoriesDialog(this, currentPageCategories, new DialogListener() {
+			@Override
+			public void onClick(String result) {
+				getContent(result);
+			}
+		});
 	}
 
 	@Override
